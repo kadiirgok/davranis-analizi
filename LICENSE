@@ -1,0 +1,28 @@
+Davranış Analizi v2.1.1 — Araştırma / Ticari Olmayan Kullanım Koşulları
+=====================================================================
+TASLAK: Bu metin bir hukuki görüş değildir; kamuya açılmadan önce hukuki gözden geçirme gerekir.
+
+1. Kapsam
+Bu koşullar bu depodaki model ağırlıkları (agirliklar/), kod (*.py), yapılandırma ve belgeler için geçerlidir. Üçüncü taraf bileşenler (madde 5) kendi lisanslarına tabidir.
+
+2. İzin verilen kullanım
+Yalnızca araştırma, eğitim ve ticari olmayan kullanım için; kopyalama, çalıştırma ve değiştirme serbesttir. Değiştirilmiş sürümler aynı koşullarla ve bu dosyanın korunmasıyla paylaşılmalıdır.
+
+3. Yasak kullanım
+a) Ticari kullanım (doğrudan ya da dolaylı gelir getiren ürün/hizmet; ücretli API dahil).
+b) İşe alım/personel değerlendirme, kredi/sigorta kararı, adli süreç, sınır/güvenlik taraması, gözetim, kimlik tanıma.
+c) Yalan, niyet, suç ya da kişilik tespiti iddiasıyla kullanım; tıbbi/psikolojik teşhis.
+d) Rızası alınmamış kişilerin kaydedilmesi/izlenmesi; çocuklar ve hassas gruplar hakkında karar verme.
+
+4. Eğitim verisi koşulları
+Ağırlıklar şu verilerle eğitilmiş/değerlendirilmiştir ve ilgili veri koşullarına tabidir: CREMA-D (araştırma/ticari olmayan), RAVDESS (CC BY-NC-SA 4.0),
+MELD (GPL-3.0 depo + dizi içeriği telifi; yalnız araştırma), CMU-MOSEI (lisansı doğrulanamadı; yalnız araştırma varsayımı), MUStARD++ (yalnız değerlendirme; "research purposes"),
+FER2013 / AffectNet / RAF-DB (araştırma/ticari olmayan). CC BY-NC-SA 4.0'ın ShareAlike şartının ağırlıklara etkisi netleştirilmemiştir.
+Bu depoda bu veri setlerine ait klip, transkript ya da klip düzeyinde türev yoktur; yalnızca bir özet istatistik (yapilandirma/referans_populasyon.json) bulunur.
+
+5. Üçüncü taraf bileşenler
+Qwen2.5-7B-Instruct (Apache-2.0; depoda yok, ayrıca indirilir), Whisper (MIT; depoda yok), MediaPipe Face Landmarker (Apache-2.0; olcum_modelleri/face_landmarker.task),
+YuNet — OpenCV Zoo (MIT; olcum_modelleri/face_detection_yunet_2023mar.onnx), BlazeFace PyTorch dönüşümü (Apache-2.0; davranis_model/BLAZEFACE_LICENSE.txt), librosa (ISC).
+
+6. Garanti yok, sorumluluk
+Yazılım ve ağırlıklar "olduğu gibi" sunulur; doğruluk garantisi yoktur (README §4–§5: çıtaların çoğu karşılanmamıştır). Çıktılar tek başına karar girdisi değildir.

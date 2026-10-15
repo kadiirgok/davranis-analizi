@@ -1,0 +1,30 @@
+{
+ "esik_r": 0.3,
+ "izinli": [
+  "asagi_bakma",
+  "bakis_kacirma",
+  "bas_geri_cekilme",
+  "bas_yaw",
+  "browDown",
+  "browInnerUp",
+  "browOuterUp",
+  "cheekSquint",
+  "eyeSquint",
+  "eyeWide",
+  "jawOpen",
+  "mouthFrown",
+  "mouthFunnel",
+  "mouthPress",
+  "mouthPucker",
+  "mouthShrugLower",
+  "mouthSmile",
+  "mouthStretch",
+  "mouthUpperUp",
+  "noseSneer",
+  "perde_ortalama_hz",
+  "perde_std_hz",
+  "rms_ortalama",
+  "sessizlik_orani"
+ ],
+ "cikarilan": []
+}

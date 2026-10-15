@@ -1,0 +1,1109 @@
+{
+ "aciklama": "Kod tarafında işaret anlam çözümleme kuralları. Her işaret için kurallar sırayla denenir, İLK eşleşen kazanır. Koşullar: varsa_herhangi = aynı parçada (kanıt VEYA olası) bu işaretlerden en az biri var; yoksa_hepsi = bunların hiçbiri yok; icerik = söylenen cümlenin duygusu (banka etiketi: ofke, korku, uzuntu, tiksinme, mutluluk, sakin, saskinlik, notr; söylenen yoksa 'yok'). Bir kuralda birden çok koşul varsa HEPSİ sağlanmalı. Son kural koşulsuz varsayılandır.",
+ "icerik_gruplari": {
+  "olumsuz": [
+   "ofke",
+   "korku",
+   "uzuntu",
+   "tiksinme"
+  ],
+  "olumlu": [
+   "mutluluk",
+   "sakin"
+  ]
+ },
+ "isaretler": {
+  "kaş indirme": [
+   {
+    "anlam": "öfke ya da güçlü bir hoşnutsuzluk",
+    "alternatif": "yoğun bir odaklanma",
+    "varsa_herhangi": [
+     "ses seviyesi yüksek",
+     "dudakları bastırma"
+    ]
+   },
+   {
+    "anlam": "iğrenmeye yakın bir hoşnutsuzluk",
+    "alternatif": "yoğun bir odaklanma",
+    "varsa_herhangi": [
+     "üst dudak yukarı kalkması",
+     "burun kırışması"
+    ],
+    "yoksa_hepsi": [
+     "ağız köşelerini yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "iğrenmeye yakın bir hoşnutsuzluk",
+    "alternatif": "yoğun bir odaklanma",
+    "icerik": [
+     "tiksinme"
+    ]
+   },
+   {
+    "anlam": "zorlanarak değerlendirme ya da anlamaya çalışma",
+    "alternatif": "yoğun bir odaklanma",
+    "varsa_herhangi": [
+     "duraksama payı yüksek"
+    ]
+   },
+   {
+    "anlam": "hoşnutsuzluk ya da öfke",
+    "alternatif": "yoğun bir odaklanma",
+    "icerik": [
+     "ofke",
+     "korku",
+     "uzuntu"
+    ]
+   },
+   {
+    "anlam": "odaklanma ya da hafif bir hoşnutsuzluk",
+    "alternatif": "anlamaya çalışma"
+   }
+  ],
+  "kaş iç uçlarını yukarı çekme": [
+   {
+    "anlam": "üzüntü",
+    "alternatif": "yorgunluk",
+    "varsa_herhangi": [
+     "ağız köşelerini aşağı çekme",
+     "ses seviyesi düşük",
+     "baş aşağı eğimi",
+     "ses perdesi düşük"
+    ]
+   },
+   {
+    "anlam": "kaygı ya da endişe",
+    "alternatif": "şaşkınlık",
+    "varsa_herhangi": [
+     "göz açıklığında artış",
+     "ses perdesi yüksek",
+     "duraksama payı düşük",
+     "perde değişkenliği yüksek",
+     "dudakları yana germe"
+    ]
+   },
+   {
+    "anlam": "üzüntü",
+    "alternatif": "yorgunluk",
+    "icerik": [
+     "uzuntu"
+    ]
+   },
+   {
+    "anlam": "endişe",
+    "alternatif": "yorgunluk",
+    "icerik": [
+     "korku"
+    ]
+   },
+   {
+    "anlam": "hafif bir endişe ya da rica eden bir tavır",
+    "alternatif": "yorgunluk"
+   }
+  ],
+  "kaş dış uçlarını yukarı kaldırma": [
+   {
+    "anlam": "korku ya da irkilme",
+    "alternatif": "şaşkınlık",
+    "varsa_herhangi": [
+     "göz açıklığında artış",
+     "dudakları yana germe"
+    ],
+    "icerik": [
+     "korku"
+    ]
+   },
+   {
+    "anlam": "şaşkınlık",
+    "alternatif": "konuşmayı vurgulama",
+    "varsa_herhangi": [
+     "çene açıklığı",
+     "göz açıklığında artış"
+    ]
+   },
+   {
+    "anlam": "ilgi ve canlı bir anlatım",
+    "alternatif": "konuşmayı vurgulama",
+    "varsa_herhangi": [
+     "ağız köşelerini yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "şaşkınlık",
+    "alternatif": "konuşmayı vurgulama",
+    "icerik": [
+     "saskinlik"
+    ]
+   },
+   {
+    "anlam": "konuşmayı vurgulama ya da ilgi",
+    "alternatif": "şaşkınlık"
+   }
+  ],
+  "göz açıklığında artış": [
+   {
+    "anlam": "korku ya da tetikte olma",
+    "alternatif": "şaşkınlık",
+    "varsa_herhangi": [
+     "kaş iç uçlarını yukarı çekme",
+     "perde değişkenliği yüksek",
+     "dudakları yana germe"
+    ]
+   },
+   {
+    "anlam": "korku ya da tetikte olma",
+    "alternatif": "şaşkınlık",
+    "icerik": [
+     "korku"
+    ]
+   },
+   {
+    "anlam": "heyecan",
+    "alternatif": "şaşkınlık",
+    "varsa_herhangi": [
+     "ağız köşelerini yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "şaşkınlık",
+    "alternatif": "yoğun ilgi",
+    "varsa_herhangi": [
+     "kaş dış uçlarını yukarı kaldırma",
+     "çene açıklığı"
+    ]
+   },
+   {
+    "anlam": "dikkat ya da ilgi",
+    "alternatif": "şaşkınlık"
+   }
+  ],
+  "göz kısma": [
+   {
+    "anlam": "içten bir gülümseme ve sevinç",
+    "alternatif": "ışığa karşı göz kısma",
+    "varsa_herhangi": [
+     "ağız köşelerini yukarı çekme",
+     "yanak yukarı kalkması"
+    ]
+   },
+   {
+    "anlam": "hoşnutsuzluk ya da tiksinme",
+    "alternatif": "şüphe",
+    "varsa_herhangi": [
+     "kaş indirme",
+     "üst dudak yukarı kalkması",
+     "burun kırışması"
+    ]
+   },
+   {
+    "anlam": "hoşnutsuzluk",
+    "alternatif": "şüphe",
+    "icerik": [
+     "ofke",
+     "korku",
+     "uzuntu",
+     "tiksinme"
+    ]
+   },
+   {
+    "anlam": "şüphe ya da bir şeyi değerlendirme",
+    "alternatif": "ışığa karşı göz kısma"
+   }
+  ],
+  "ağız köşelerini yukarı çekme": [
+   {
+    "anlam": "alay ya da olayı hafife alma",
+    "alternatif": "nezaket gülümsemesi",
+    "varsa_herhangi": [
+     "yanak yukarı kalkması",
+     "göz kısma"
+    ],
+    "icerik": [
+     "ofke",
+     "korku",
+     "uzuntu",
+     "tiksinme"
+    ]
+   },
+   {
+    "anlam": "gerginliği yatıştırma",
+    "alternatif": "nezaket gülümsemesi",
+    "icerik": [
+     "ofke",
+     "korku",
+     "uzuntu",
+     "tiksinme"
+    ]
+   },
+   {
+    "anlam": "gözlere ulaşmayan bir nezaket gülümsemesi",
+    "alternatif": "konuşmayı yumuşatma",
+    "varsa_herhangi": [],
+    "yoksa_hepsi": [
+     "yanak yukarı kalkması",
+     "göz kısma"
+    ]
+   },
+   {
+    "anlam": "içten bir sevinç",
+    "alternatif": "nezaket gülümsemesi",
+    "varsa_herhangi": [
+     "yanak yukarı kalkması",
+     "göz kısma"
+    ]
+   },
+   {
+    "anlam": "sevinç ya da nezaket",
+    "alternatif": "konuşmayı yumuşatma"
+   }
+  ],
+  "yanak yukarı kalkması": [
+   {
+    "anlam": "içten sevinç",
+    "alternatif": "nezaket gülümsemesi",
+    "varsa_herhangi": [
+     "ağız köşelerini yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "tiksinme",
+    "alternatif": "küçümseme",
+    "varsa_herhangi": [
+     "üst dudak yukarı kalkması",
+     "burun kırışması"
+    ],
+    "yoksa_hepsi": [
+     "ağız köşelerini yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "hafif bir gülümseme eğilimi",
+    "alternatif": "ışığa karşı göz kısma",
+    "yoksa_hepsi": [
+     "alt dudağı yukarı itme",
+     "ağız köşelerini aşağı çekme",
+     "ağız köşelerini yukarı çekme",
+     "bakış yönü sapması",
+     "baş aşağı eğimi",
+     "baş geri çekilmesi",
+     "baş yönü sapması",
+     "burun kırışması",
+     "dudak büzme",
+     "dudakları bastırma",
+     "dudakları yana germe",
+     "dudakları öne büzme",
+     "duraksama payı düşük",
+     "duraksama payı yüksek",
+     "göz açıklığında artış",
+     "göz kısma",
+     "kaş dış uçlarını yukarı kaldırma",
+     "kaş indirme",
+     "kaş iç uçlarını yukarı çekme",
+     "perde değişkenliği düşük",
+     "perde değişkenliği yüksek",
+     "ses perdesi düşük",
+     "ses perdesi yüksek",
+     "ses seviyesi düşük",
+     "ses seviyesi yüksek",
+     "çene açıklığı",
+     "üst dudak yukarı kalkması"
+    ]
+   },
+   {
+    "anlam": "hafif bir gülümseme eğilimi",
+    "alternatif": "konuşmanın doğal parçası"
+   }
+  ],
+  "üst dudak yukarı kalkması": [
+   {
+    "anlam": "alay ya da olayı hafife alma",
+    "alternatif": "küçümseme",
+    "varsa_herhangi": [
+     "ağız köşelerini yukarı çekme"
+    ],
+    "icerik": [
+     "ofke",
+     "korku",
+     "uzuntu",
+     "tiksinme"
+    ]
+   },
+   {
+    "anlam": "geniş bir gülüş",
+    "alternatif": "küçümseme",
+    "varsa_herhangi": [
+     "ağız köşelerini yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "tiksinme",
+    "alternatif": "küçümseme",
+    "varsa_herhangi": [
+     "burun kırışması",
+     "baş geri çekilmesi"
+    ]
+   },
+   {
+    "anlam": "tiksinme",
+    "alternatif": "küçümseme",
+    "icerik": [
+     "tiksinme"
+    ]
+   },
+   {
+    "anlam": "hoşnutsuzluk ya da küçümseme",
+    "alternatif": "konuşmanın doğal parçası"
+   }
+  ],
+  "ağız köşelerini aşağı çekme": [
+   {
+    "anlam": "üzüntü ya da hayal kırıklığı",
+    "alternatif": "yorgunluk",
+    "varsa_herhangi": [
+     "kaş iç uçlarını yukarı çekme",
+     "ses seviyesi düşük",
+     "ses perdesi düşük"
+    ]
+   },
+   {
+    "anlam": "üzüntü ya da hayal kırıklığı",
+    "alternatif": "yorgunluk",
+    "icerik": [
+     "uzuntu"
+    ]
+   },
+   {
+    "anlam": "hoşnutsuzluk ya da küçümseme",
+    "alternatif": "hayal kırıklığı",
+    "varsa_herhangi": [
+     "üst dudak yukarı kalkması",
+     "kaş indirme",
+     "burun kırışması"
+    ]
+   },
+   {
+    "anlam": "hoşnutsuzluk ya da küçümseme",
+    "alternatif": "hayal kırıklığı",
+    "icerik": [
+     "tiksinme",
+     "ofke"
+    ]
+   },
+   {
+    "anlam": "hoşnutsuzluk ya da kayıtsızlık",
+    "alternatif": "hayal kırıklığı"
+   }
+  ],
+  "dudakları bastırma": [
+   {
+    "anlam": "bastırılmış bir gülüş",
+    "alternatif": "kararlılık",
+    "varsa_herhangi": [
+     "ağız köşelerini yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "öfkeyi bastırma",
+    "alternatif": "kararlılık",
+    "varsa_herhangi": [
+     "kaş indirme",
+     "ses seviyesi yüksek"
+    ]
+   },
+   {
+    "anlam": "öfkeyi bastırma",
+    "alternatif": "kararlılık",
+    "icerik": [
+     "ofke"
+    ]
+   },
+   {
+    "anlam": "söylemekten kaçınma ya da tepkiyi tutma",
+    "alternatif": "iç değerlendirme",
+    "varsa_herhangi": [
+     "duraksama payı yüksek"
+    ]
+   },
+   {
+    "anlam": "tepkiyi tutma ya da gerginlik",
+    "alternatif": "kararlılık"
+   }
+  ],
+  "dudak büzme": [
+   {
+    "anlam": "iç değerlendirme ya da tartma",
+    "alternatif": "şüphe",
+    "varsa_herhangi": [
+     "duraksama payı yüksek"
+    ]
+   },
+   {
+    "anlam": "hoşnutsuzluk ya da şüphe",
+    "alternatif": "iç değerlendirme",
+    "icerik": [
+     "ofke",
+     "korku",
+     "uzuntu",
+     "tiksinme"
+    ]
+   },
+   {
+    "anlam": "iç değerlendirme ya da tereddüt",
+    "alternatif": "şüphe"
+   }
+  ],
+  "dudakları öne büzme": [
+   {
+    "anlam": "hoşnutsuzluk ya da şüphe",
+    "alternatif": "konuşmanın doğal parçası",
+    "icerik": [
+     "ofke",
+     "korku",
+     "uzuntu",
+     "tiksinme"
+    ]
+   },
+   {
+    "anlam": "iç değerlendirme ya da tereddüt",
+    "alternatif": "konuşmanın doğal parçası"
+   }
+  ],
+  "çene açıklığı": [
+   {
+    "anlam": "gülme",
+    "alternatif": "konuşmanın doğal parçası",
+    "varsa_herhangi": [
+     "ağız köşelerini yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "korku ya da irkilme",
+    "alternatif": "şaşkınlık",
+    "varsa_herhangi": [
+     "kaş dış uçlarını yukarı kaldırma",
+     "göz açıklığında artış"
+    ],
+    "icerik": [
+     "korku"
+    ]
+   },
+   {
+    "anlam": "şaşkınlık",
+    "alternatif": "konuşmanın doğal parçası",
+    "varsa_herhangi": [
+     "kaş dış uçlarını yukarı kaldırma",
+     "göz açıklığında artış"
+    ]
+   },
+   {
+    "anlam": "konuşmanın doğal parçası",
+    "alternatif": "şaşkınlık"
+   }
+  ],
+  "alt dudağı yukarı itme": [
+   {
+    "anlam": "üzüntüyü bastırma",
+    "alternatif": "kararlılık",
+    "varsa_herhangi": [
+     "kaş iç uçlarını yukarı çekme",
+     "ağız köşelerini aşağı çekme"
+    ]
+   },
+   {
+    "anlam": "üzüntüyü bastırma",
+    "alternatif": "kararlılık",
+    "icerik": [
+     "uzuntu"
+    ]
+   },
+   {
+    "anlam": "inat ya da kararlılık",
+    "alternatif": "iç değerlendirme",
+    "varsa_herhangi": [
+     "kaş indirme"
+    ]
+   },
+   {
+    "anlam": "şüphe ya da tartma",
+    "alternatif": "kararlılık"
+   }
+  ],
+  "ses seviyesi yüksek": [
+   {
+    "anlam": "öfke",
+    "alternatif": "vurgulama",
+    "varsa_herhangi": [
+     "kaş indirme",
+     "dudakları bastırma"
+    ]
+   },
+   {
+    "anlam": "öfke",
+    "alternatif": "vurgulama",
+    "icerik": [
+     "ofke"
+    ]
+   },
+   {
+    "anlam": "panik ya da yoğun endişe",
+    "alternatif": "vurgulama",
+    "icerik": [
+     "korku"
+    ]
+   },
+   {
+    "anlam": "heyecan ya da sevinç",
+    "alternatif": "ortam gürültüsü",
+    "varsa_herhangi": [
+     "ağız köşelerini yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "heyecan ya da sevinç",
+    "alternatif": "ortam gürültüsü",
+    "icerik": [
+     "mutluluk",
+     "sakin",
+     "saskinlik"
+    ]
+   },
+   {
+    "anlam": "duygusal yoğunluk ya da vurgulama",
+    "alternatif": "ortam gürültüsü"
+   }
+  ],
+  "ses seviyesi düşük": [
+   {
+    "anlam": "üzüntü ya da keyifsizlik",
+    "alternatif": "yorgunluk",
+    "varsa_herhangi": [
+     "kaş iç uçlarını yukarı çekme",
+     "ağız köşelerini aşağı çekme",
+     "duraksama payı yüksek"
+    ]
+   },
+   {
+    "anlam": "üzüntü ya da keyifsizlik",
+    "alternatif": "yorgunluk",
+    "icerik": [
+     "uzuntu"
+    ]
+   },
+   {
+    "anlam": "sakinlik",
+    "alternatif": "yorgunluk",
+    "icerik": [
+     "mutluluk",
+     "sakin"
+    ]
+   },
+   {
+    "anlam": "çekingenlik ya da yorgunluk",
+    "alternatif": "sakin bir konuşma biçimi"
+   }
+  ],
+  "ses perdesi yüksek": [
+   {
+    "anlam": "heyecan",
+    "alternatif": "soru sorma ya da vurgu",
+    "varsa_herhangi": [
+     "ağız köşelerini yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "heyecan",
+    "alternatif": "soru sorma ya da vurgu",
+    "icerik": [
+     "mutluluk",
+     "saskinlik"
+    ]
+   },
+   {
+    "anlam": "kaygı ya da gerginlik",
+    "alternatif": "heyecan",
+    "varsa_herhangi": [
+     "göz açıklığında artış",
+     "kaş iç uçlarını yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "kaygı ya da gerginlik",
+    "alternatif": "heyecan",
+    "icerik": [
+     "korku"
+    ]
+   },
+   {
+    "anlam": "öfkeyle yükselen gerginlik",
+    "alternatif": "soru sorma ya da vurgu",
+    "icerik": [
+     "ofke"
+    ]
+   },
+   {
+    "anlam": "gerginlik ya da heyecan",
+    "alternatif": "soru sorma ya da vurgu"
+   }
+  ],
+  "perde değişkenliği yüksek": [
+   {
+    "anlam": "öfkeyle yükselen duygusal yoğunluk",
+    "alternatif": "canlı bir anlatım",
+    "varsa_herhangi": [
+     "ses seviyesi yüksek",
+     "kaş indirme"
+    ],
+    "icerik": [
+     "ofke",
+     "tiksinme"
+    ]
+   },
+   {
+    "anlam": "duygusal yoğunluk",
+    "alternatif": "canlı bir anlatım",
+    "varsa_herhangi": [
+     "ses seviyesi yüksek"
+    ]
+   },
+   {
+    "anlam": "gerginlik ya da sesin titremesi",
+    "alternatif": "canlı bir anlatım",
+    "icerik": [
+     "korku",
+     "uzuntu"
+    ]
+   },
+   {
+    "anlam": "heyecanlı ve canlı bir anlatım",
+    "alternatif": "duygusal yoğunluk",
+    "icerik": [
+     "mutluluk",
+     "sakin",
+     "saskinlik"
+    ]
+   },
+   {
+    "anlam": "duygusal yoğunluk",
+    "alternatif": "canlı bir anlatım"
+   }
+  ],
+  "duraksama payı düşük": [
+   {
+    "anlam": "öfkeyle hızlanma",
+    "alternatif": "akıcı bir konuşma",
+    "varsa_herhangi": [
+     "ses seviyesi yüksek"
+    ],
+    "icerik": [
+     "ofke"
+    ]
+   },
+   {
+    "anlam": "gerginlik ya da konuyu çabuk geçme isteği",
+    "alternatif": "akıcı bir konuşma",
+    "varsa_herhangi": [
+     "göz açıklığında artış",
+     "kaş iç uçlarını yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "gerginlik ya da konuyu çabuk geçme isteği",
+    "alternatif": "akıcı bir konuşma",
+    "icerik": [
+     "korku"
+    ]
+   },
+   {
+    "anlam": "heyecan",
+    "alternatif": "akıcı bir konuşma",
+    "icerik": [
+     "mutluluk",
+     "sakin",
+     "saskinlik"
+    ]
+   },
+   {
+    "anlam": "doğal bir konuşma hızı ya da heyecan",
+    "alternatif": "canlı bir anlatım"
+   }
+  ],
+  "duraksama payı yüksek": [
+   {
+    "anlam": "üzüntü ya da isteksizlik",
+    "alternatif": "iç değerlendirme",
+    "varsa_herhangi": [
+     "ses seviyesi düşük",
+     "baş aşağı eğimi",
+     "kaş iç uçlarını yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "üzüntü ya da isteksizlik",
+    "alternatif": "iç değerlendirme",
+    "icerik": [
+     "uzuntu"
+    ]
+   },
+   {
+    "anlam": "zor bir konudan kaçınma",
+    "alternatif": "hatırlamaya çalışma",
+    "varsa_herhangi": [
+     "bakış yönü sapması"
+    ]
+   },
+   {
+    "anlam": "iç değerlendirme ya da kelime arama",
+    "alternatif": "hatırlamaya çalışma"
+   }
+  ],
+  "bakış yönü sapması": [
+   {
+    "anlam": "utanç ya da üzüntüyle içe dönme",
+    "alternatif": "dikkatin dağılması",
+    "varsa_herhangi": [
+     "baş aşağı eğimi"
+    ],
+    "icerik": [
+     "uzuntu"
+    ]
+   },
+   {
+    "anlam": "utanç ya da üzüntüyle içe dönme",
+    "alternatif": "dikkatin dağılması",
+    "varsa_herhangi": [
+     "ses seviyesi düşük",
+     "kaş iç uçlarını yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "iç değerlendirme ya da hatırlamaya çalışma",
+    "alternatif": "dikkatin dağılması",
+    "varsa_herhangi": [
+     "duraksama payı yüksek"
+    ]
+   },
+   {
+    "anlam": "konudan rahatsızlık",
+    "alternatif": "dikkatin dağılması",
+    "icerik": [
+     "ofke",
+     "korku",
+     "uzuntu",
+     "tiksinme"
+    ]
+   },
+   {
+    "anlam": "iç değerlendirme ya da dikkatin kayması",
+    "alternatif": "hatırlamaya çalışma"
+   }
+  ],
+  "baş aşağı eğimi": [
+   {
+    "anlam": "üzüntü ya da mahcubiyet",
+    "alternatif": "iç değerlendirme",
+    "varsa_herhangi": [
+     "ses seviyesi düşük",
+     "kaş iç uçlarını yukarı çekme",
+     "ağız köşelerini aşağı çekme"
+    ]
+   },
+   {
+    "anlam": "üzüntü ya da mahcubiyet",
+    "alternatif": "iç değerlendirme",
+    "icerik": [
+     "uzuntu"
+    ]
+   },
+   {
+    "anlam": "iç değerlendirme ya da içe dönme",
+    "alternatif": "dikkatin başka yere kayması"
+   }
+  ],
+  "baş yönü sapması": [
+   {
+    "anlam": "konudan uzaklaşma isteği",
+    "alternatif": "dikkatin başka yere kayması",
+    "icerik": [
+     "ofke",
+     "korku",
+     "uzuntu",
+     "tiksinme"
+    ]
+   },
+   {
+    "anlam": "dikkatin başka yere kayması",
+    "alternatif": "kamera açısı"
+   }
+  ],
+  "baş geri çekilmesi": [
+   {
+    "anlam": "gülmeye eşlik eden geriye yaslanma",
+    "alternatif": "mesafe koyma",
+    "varsa_herhangi": [
+     "ağız köşelerini yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "tiksinme ya da itilme",
+    "alternatif": "mesafe koyma",
+    "varsa_herhangi": [
+     "üst dudak yukarı kalkması",
+     "burun kırışması"
+    ]
+   },
+   {
+    "anlam": "tiksinme ya da itilme",
+    "alternatif": "mesafe koyma",
+    "icerik": [
+     "tiksinme"
+    ]
+   },
+   {
+    "anlam": "irkilme",
+    "alternatif": "mesafe koyma",
+    "varsa_herhangi": [
+     "göz açıklığında artış",
+     "kaş dış uçlarını yukarı kaldırma"
+    ]
+   },
+   {
+    "anlam": "mesafe koyma",
+    "alternatif": "irkilme"
+   }
+  ],
+  "burun kırışması": [
+   {
+    "anlam": "tiksinme",
+    "alternatif": "güçlü bir gülüş",
+    "yoksa_hepsi": [
+     "ağız köşelerini yukarı çekme"
+    ]
+   },
+   {
+    "anlam": "güçlü bir gülüş",
+    "alternatif": "tiksinme"
+   }
+  ],
+  "dudakları yana germe": [
+   {
+    "anlam": "korku ya da gerginlik",
+    "alternatif": "zorlanma",
+    "varsa_herhangi": [
+     "göz açıklığında artış",
+     "kaş iç uçlarını yukarı çekme",
+     "kaş dış uçlarını yukarı kaldırma"
+    ]
+   },
+   {
+    "anlam": "korku ya da gerginlik",
+    "alternatif": "zorlanma",
+    "icerik": [
+     "korku"
+    ]
+   },
+   {
+    "anlam": "gerginlik",
+    "alternatif": "zorlanma"
+   }
+  ],
+  "perde değişkenliği düşük": [
+   {
+    "anlam": "keyifsizlik ya da üzüntü",
+    "alternatif": "yorgunluk",
+    "icerik": [
+     "uzuntu"
+    ]
+   },
+   {
+    "anlam": "ilgisizlik ya da yorgunluk",
+    "alternatif": "monoton bir konuşma biçimi"
+   }
+  ],
+  "ses perdesi düşük": [
+   {
+    "anlam": "üzüntü",
+    "alternatif": "yorgunluk",
+    "icerik": [
+     "uzuntu"
+    ]
+   },
+   {
+    "anlam": "sakinlik",
+    "alternatif": "yorgunluk",
+    "icerik": [
+     "mutluluk",
+     "sakin"
+    ]
+   },
+   {
+    "anlam": "yorgunluk ya da keyifsizlik",
+    "alternatif": "sakin bir konuşma biçimi"
+   }
+  ]
+ },
+ "yokluk_isaretleri": {
+  "liste": [],
+  "kural": "Bu işaretler bir hareketin YOKLUĞUNU anlatır; kanıt listesinde kalabilir ama yorum metninde tek başına anılmaz ve çıkarım üretmez. Tek istisna: 'göz çevresi gevşek' + 'ağız köşelerini yukarı çekme' birlikteyse yukarıdaki gülümseme kuralı onu kullanır."
+ },
+ "anlam_ailesi": {
+  "bastırılmış bir gülüş": "olumlu",
+  "ciddiyet": "bilissel",
+  "dikkat ya da ilgi": "bilissel",
+  "dikkatin başka yere kayması": "bilissel",
+  "duygusal yoğunluk": "bilissel",
+  "duygusal yoğunluk ya da vurgulama": "bilissel",
+  "düşünme ya da dikkatin kayması": "bilissel",
+  "düşünme ya da hatırlamaya çalışma": "bilissel",
+  "düşünme ya da içe dönme": "bilissel",
+  "düşünme ya da kelime arama": "bilissel",
+  "düşünme ya da tereddüt": "bilissel",
+  "düşünme, tartma": "bilissel",
+  "endişe": "korku",
+  "geniş bir gülüşün parçası": "olumlu",
+  "gerginlik": "korku",
+  "gerginlik ya da heyecan": "korku",
+  "gerginlik, konuyu çabuk geçme isteği": "korku",
+  "gerginlik, sesin titremesi": "korku",
+  "gülerken geriye yaslanma": "olumlu",
+  "gülme": "olumlu",
+  "güçlü bir gülüşün parçası": "olumlu",
+  "hafif bir endişe ya da rica eden bir tavır": "korku",
+  "hafif bir gülümseme eğilimi": "olumlu",
+  "heyecan": "olumlu",
+  "heyecan ya da sevinç": "olumlu",
+  "heyecanlı, canlı bir anlatım": "olumlu",
+  "hoşnutsuzluk": "ofke",
+  "hoşnutsuzluk ya da kayıtsızlık": "ofke",
+  "hoşnutsuzluk ya da küçümseme": "tiksinme",
+  "hoşnutsuzluk ya da tiksinme": "tiksinme",
+  "hoşnutsuzluk ya da öfke": "ofke",
+  "hoşnutsuzluk ya da şüphe": "ofke",
+  "ilgi ve canlı bir anlatım": "olumlu",
+  "ilgisizlik ya da yorgunluk": "olumsuz_genel",
+  "inat ya da kararlılık": "ofke",
+  "irkilme": "korku",
+  "içe dönme": "bilissel",
+  "içten bir gülümsemenin parçası, sevinç": "olumlu",
+  "içten bir sevinç": "olumlu",
+  "içten sevinç": "olumlu",
+  "iğrenmeye yakın bir hoşnutsuzluk": "tiksinme",
+  "kaygı ya da endişe": "korku",
+  "kaygı ya da gerginlik": "korku",
+  "kendini tutma ya da gerginlik": "korku",
+  "keyifsizlik": "uzuntu",
+  "keyifsizlik ya da üzüntü": "uzuntu",
+  "kişinin doğal konuşma hızı ya da heyecan": "olumlu",
+  "konudan rahatsızlık": "olumsuz_genel",
+  "konudan uzaklaşma isteği": "olumsuz_genel",
+  "konuşmanın doğal parçası": "bilissel",
+  "konuşmayı vurgulama ya da ilgi": "bilissel",
+  "korku ya da gerginlik": "korku",
+  "korku ya da irkilme": "korku",
+  "korku ya da tetikte olma": "korku",
+  "mesafe koyma": "olumsuz_genel",
+  "nezaket gülümsemesi, gülümseme gözlere ulaşmıyor": "olumlu",
+  "odaklanma ya da hafif bir hoşnutsuzluk": "bilissel",
+  "panik ya da yoğun endişe": "korku",
+  "rahatlık": "olumlu",
+  "sakinlik": "olumlu",
+  "sevinç ya da nezaket": "olumlu",
+  "söylemekten kaçınma ya da kendini tutma": "olumsuz_genel",
+  "söylenen olumlu içeriğe duygusal olarak katılmama": "olumsuz_genel",
+  "tiksinme": "tiksinme",
+  "tiksinme ya da itilme": "tiksinme",
+  "utanç ya da üzüntüyle içe dönme": "uzuntu",
+  "yorgunluk": "bilissel",
+  "yorgunluk ya da ilgisizlik": "olumsuz_genel",
+  "yorgunluk ya da isteksizlik": "olumsuz_genel",
+  "yorgunluk ya da keyifsizlik": "uzuntu",
+  "zor bir konuyu konuşma, kaçınma": "olumsuz_genel",
+  "zorlanarak düşünme ya da anlamaya çalışma": "bilissel",
+  "çekingenlik ya da isteksizlik": "olumsuz_genel",
+  "çekingenlik ya da yorgunluk": "bilissel",
+  "öfke": "ofke",
+  "öfke ya da güçlü bir hoşnutsuzluk": "ofke",
+  "öfkeyi bastırma": "ofke",
+  "öfkeyle hızlanma": "ofke",
+  "öfkeyle yükselen duygusal yoğunluk": "ofke",
+  "öfkeyle yükselen gerginlik": "ofke",
+  "üzüntü": "uzuntu",
+  "üzüntü ya da hayal kırıklığı": "uzuntu",
+  "üzüntü ya da isteksizlik": "uzuntu",
+  "üzüntü ya da keyifsizlik": "uzuntu",
+  "üzüntü ya da mahcubiyet": "uzuntu",
+  "üzüntüyle içe kapanma": "uzuntu",
+  "üzüntüyü bastırma": "uzuntu",
+  "şaşkınlık": "saskinlik",
+  "şüphe ya da bir şeyi değerlendirme": "bilissel",
+  "şüphe ya da tartma": "bilissel",
+  "alay ya da olayı hafife alma": "olumsuz_genel",
+  "gerginliği yatıştırma": "olumsuz_genel"
+ },
+ "aile_degerlik": {
+  "olumlu": "olumlu",
+  "ofke": "olumsuz",
+  "tiksinme": "olumsuz",
+  "uzuntu": "olumsuz",
+  "korku": "olumsuz",
+  "olumsuz_genel": "olumsuz",
+  "saskinlik": "notr",
+  "bilissel": "notr"
+ },
+ "icerik_ailesi": {
+  "ofke": "ofke",
+  "korku": "korku",
+  "uzuntu": "uzuntu",
+  "tiksinme": "tiksinme",
+  "mutluluk": "olumlu",
+  "sakin": "olumlu",
+  "saskinlik": "saskinlik",
+  "notr": "notr",
+  "yok": "yok"
+ },
+ "birincil_anlam": "Parçanın BİRİNCİL anlamı: önce kanıt katmanı, sonra olası. Aynı katmanda aile önceliği: ofke, tiksinme, uzuntu, korku, olumlu, saskinlik, olumsuz_genel, bilissel; eşitlikte güveni yüksek olan. İkincil anlam: birincilden FARKLI ailedeki en öncelikli anlam (varsa).",
+ "uyum_kurallari": {
+  "aciklama": "Parça uyumu GÖZLENEN davranışın birincil anlamı ile söylenen içeriğin ailesi karşılaştırılarak kodla hesaplanır (klibin oyunculuk etiketi KULLANILMAZ). Kurallar sırayla, ilk eşleşen.",
+  "kurallar": [
+   "işaret yok → degerlendirilemedi",
+   "icerik 'yok' (ses yok) → degerlendirilemedi",
+   "birincil anlam ailesi 'bilissel' → kismen (davranış duygu hakkında net bir şey söylemiyor)",
+   "icerik 'notr' → birincil anlam duygusal ise kismen (söz duygu taşımıyor, davranış taşıyor), değilse uyumlu",
+   "birincil anlam ailesi == icerik ailesi → uyumlu",
+   "ikisi de olumsuz değerlikli, farklı aile: biri olumsuz_genel ise uyumlu (skor 0.7); ikisi de belirli ve farklı aileler ise (ör. öfke içerik + üzüntü davranış) kismen (skor 0.6)",
+   "saskinlik ile olumlu/olumsuz → kismen",
+   "değerlikler zıt (olumlu ↔ olumsuz) → uyumsuz",
+   "birincil anlam yalnız OLASI katmandan geliyorsa: uyumsuz → kismen'e düşürülür (olası işaret uyumsuzluk iddiası taşıyamaz)"
+  ],
+  "skor": {
+   "uyumlu": 1.0,
+   "kismen": 0.5,
+   "uyumsuz": 0.0,
+   "degerlendirilemedi": null,
+   "uyumlu_genel": 0.7
+  },
+  "olay_uyumu": "İşaretli parçaların ortalaması; hepsi degerlendirilemedi ise degerlendirilemedi."
+ },
+ "ruh_hali_kurali": "ruh_hali KODLA: işaretli parçaların birincil anlam ailelerinden en sık ikisi → ofke: öfkeli/gergin, tiksinme: tiksinmiş/rahatsız, uzuntu: üzgün/keyifsiz, korku: kaygılı/gergin, olumlu: neşeli (heyecan içeriyorsa heyecanlı; rahatlık/sakinlik ise rahat), saskinlik: şaşkın, olumsuz_genel: rahatsız, bilissel: kararsız. Yalnız olası katmandan geliyorsa tek değer. Aileler çelişiyorsa (olumlu+olumsuz) ikisi de yazılır.",
+ "kural_surumu": "v2.1-guven-2",
+ "guven_kurali": {
+  "surum": "v2.1-guven-2",
+  "tarih": "2026-10-11",
+  "kural": "olay.duygu icin en olasi sinif olasiligi (parca ortalamasi) < GUVEN_ESIK[0] (0.55) ise olay.duygu = 'çıkarım yapılamıyor' (TUM siniflar); en olasi sinif ve p yalniz teknik alan olay.en_olasi'ye yazilir.",
+  "notr": "'nötr' yalniz p_notr >= 0.55 iken yazilabilir.",
+  "kapsam": "yalniz cikarim (SablonUretici.guven_kurali=True); egitim hedefi/ogretmen yolu (olay_ham varsayilani) DEGISMEZ; yeniden egitim gerekmez.",
+  "genel_yorum": "kod-yazimi: duygu adi gecmez (isaretsiz_genel duygu_adi_yok); LLM-yazimi: hedef_v2.genel_duygu_adlari ile bayraklanir.",
+  "ruh_hali_tutum": "ruh_hali/tutum isaret ailelerinden (ruh_tutum) turetilir, sinif basliginden DEGIL: kuraldan etkilenmez."
+ },
+ "e0_duzeltmeleri": {
+  "surum": "v2.1-guven-2",
+  "tarih": "2026-10-11",
+  "yokluk_iddiasi": "kod yazimli sablonlar OLCUM hakkinda konusur ('olcum katmani esigi gecen bir isaret saptamadi'); 'belirgin hareket yok / duyulmuyor / gorunmuyor' dunya iddialari kaldirildi; modalite eksikligi 'girdisi yok' olarak ifade edilir.",
+  "bas_yaw": "BlazeFace yaw'i MediaPipe'in ~1.81 kati; z hesabi degismez, MUTLAK kapi: kalibre ort |yaw| >= 15 derece (ACI_OLCEK=0.553), aksi halde iddia edilmez.",
+  "asagi_bakma": "mutlak kapi: kalibre ort asagi pitch >= 10 derece.",
+  "bakis_kacirma": "kalibre baş yonu >20 derece kare payi >= 0.25 (not: olcum BAS YONUDUR; bakis (iris) olculmez, ifade bunu abartir -> v2.1'de yeniden adlandirilacak).",
+  "bas_geri_cekilme": "kanit olarak sunulmaz (MediaPipe yuz genisligi oraniyla r=0.15).",
+  "istem": "LLM istemindeki 'Olcumler/Olasi isaretler' satirlari olay_ham ile ayni yokluk filtresinden gecer (E0 halusinasyon vakasi)."
+ },
+ "alternatif_temizligi": "2026-10-13: sinyal basina en fazla 2 alternatif (v2/v21/alternatif_temizle.py)"
+}

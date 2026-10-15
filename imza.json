@@ -1,0 +1,440 @@
+{
+ "Korku": [
+  [
+   "eyeWide",
+   1
+  ],
+  [
+   "eyeSquint",
+   -1
+  ],
+  [
+   "mouthSmile",
+   -1
+  ],
+  [
+   "mouthPress",
+   -1
+  ],
+  [
+   "mouthUpperUp",
+   -1
+  ]
+ ],
+ "Mutluluk": [
+  [
+   "mouthSmile",
+   1
+  ],
+  [
+   "cheekSquint",
+   1
+  ],
+  [
+   "mouthUpperUp",
+   1
+  ],
+  [
+   "mouthPress",
+   1
+  ],
+  [
+   "mouthStretch",
+   1
+  ],
+  [
+   "browOuterUp",
+   1
+  ],
+  [
+   "sessizlik_orani",
+   -1
+  ],
+  [
+   "browInnerUp",
+   1
+  ]
+ ],
+ "Notr": [
+  [
+   "mouthUpperUp",
+   -1
+  ],
+  [
+   "cheekSquint",
+   -1
+  ],
+  [
+   "mouthSmile",
+   -1
+  ],
+  [
+   "perde_ortalama_hz",
+   -1
+  ],
+  [
+   "eyeSquint",
+   -1
+  ],
+  [
+   "rms_ortalama",
+   -1
+  ],
+  [
+   "browDown",
+   -1
+  ],
+  [
+   "mouthPress",
+   1
+  ]
+ ],
+ "Ofke": [
+  [
+   "rms_ortalama",
+   1
+  ],
+  [
+   "sessizlik_orani",
+   -1
+  ],
+  [
+   "jawOpen",
+   1
+  ],
+  [
+   "perde_ortalama_hz",
+   1
+  ],
+  [
+   "mouthFunnel",
+   1
+  ],
+  [
+   "mouthPucker",
+   1
+  ],
+  [
+   "perde_std_hz",
+   1
+  ],
+  [
+   "eyeWide",
+   1
+  ]
+ ],
+ "Sakin": [
+  [
+   "sessizlik_orani",
+   1
+  ],
+  [
+   "mouthShrugLower",
+   1
+  ],
+  [
+   "browDown",
+   -1
+  ],
+  [
+   "rms_ortalama",
+   -1
+  ],
+  [
+   "cheekSquint",
+   -1
+  ],
+  [
+   "eyeWide",
+   -1
+  ],
+  [
+   "perde_ortalama_hz",
+   -1
+  ],
+  [
+   "jawOpen",
+   -1
+  ]
+ ],
+ "Saskinlik": [
+  [
+   "eyeWide",
+   1
+  ],
+  [
+   "eyeSquint",
+   -1
+  ],
+  [
+   "browOuterUp",
+   1
+  ],
+  [
+   "perde_ortalama_hz",
+   1
+  ],
+  [
+   "mouthSmile",
+   -1
+  ],
+  [
+   "browInnerUp",
+   1
+  ],
+  [
+   "mouthUpperUp",
+   -1
+  ],
+  [
+   "mouthFunnel",
+   1
+  ]
+ ],
+ "Tiksinme": [
+  [
+   "browDown",
+   1
+  ],
+  [
+   "eyeSquint",
+   1
+  ],
+  [
+   "mouthFrown",
+   1
+  ],
+  [
+   "mouthPress",
+   -1
+  ],
+  [
+   "eyeWide",
+   -1
+  ],
+  [
+   "perde_ortalama_hz",
+   -1
+  ],
+  [
+   "mouthStretch",
+   1
+  ],
+  [
+   "mouthUpperUp",
+   1
+  ]
+ ],
+ "Uzuntu": [
+  [
+   "sessizlik_orani",
+   1
+  ],
+  [
+   "mouthUpperUp",
+   -1
+  ],
+  [
+   "rms_ortalama",
+   -1
+  ],
+  [
+   "perde_ortalama_hz",
+   -1
+  ],
+  [
+   "mouthSmile",
+   -1
+  ],
+  [
+   "cheekSquint",
+   -1
+  ],
+  [
+   "perde_std_hz",
+   -1
+  ],
+  [
+   "eyeWide",
+   -1
+  ]
+ ],
+ "_ort_z": {
+  "Korku": {
+   "browDown": -0.197,
+   "browInnerUp": 0.172,
+   "browOuterUp": 0.0047,
+   "cheekSquint": -0.0887,
+   "eyeSquint": -0.7907,
+   "eyeWide": 0.9259,
+   "jawOpen": 0.0488,
+   "mouthFrown": -0.0611,
+   "mouthFunnel": -0.0328,
+   "mouthPucker": 0.0565,
+   "mouthPress": -0.3364,
+   "mouthShrugLower": -0.414,
+   "mouthSmile": -0.4817,
+   "mouthStretch": -0.2709,
+   "mouthUpperUp": -0.3316,
+   "noseSneer": 0.1347,
+   "rms_ortalama": -0.0239,
+   "sessizlik_orani": 0.0616,
+   "perde_ortalama_hz": 0.1634,
+   "perde_std_hz": -0.1199
+  },
+  "Mutluluk": {
+   "browDown": -0.4581,
+   "browInnerUp": 0.5422,
+   "browOuterUp": 0.7408,
+   "cheekSquint": 1.2472,
+   "eyeSquint": 0.4251,
+   "eyeWide": -0.137,
+   "jawOpen": -0.2402,
+   "mouthFrown": -0.3217,
+   "mouthFunnel": -0.0516,
+   "mouthPucker": -0.5053,
+   "mouthPress": 0.9283,
+   "mouthShrugLower": 0.1141,
+   "mouthSmile": 1.6812,
+   "mouthStretch": 0.8915,
+   "mouthUpperUp": 1.2165,
+   "noseSneer": 0.3089,
+   "rms_ortalama": 0.1481,
+   "sessizlik_orani": -0.5503,
+   "perde_ortalama_hz": 0.473,
+   "perde_std_hz": 0.3973
+  },
+  "Notr": {
+   "browDown": -0.4067,
+   "browInnerUp": -0.125,
+   "browOuterUp": -0.0237,
+   "cheekSquint": -0.5732,
+   "eyeSquint": -0.4989,
+   "eyeWide": -0.1888,
+   "jawOpen": -0.1733,
+   "mouthFrown": -0.3622,
+   "mouthFunnel": -0.007,
+   "mouthPucker": 0.1626,
+   "mouthPress": 0.2689,
+   "mouthShrugLower": 0.2101,
+   "mouthSmile": -0.563,
+   "mouthStretch": -0.5202,
+   "mouthUpperUp": -0.6551,
+   "noseSneer": -0.1527,
+   "rms_ortalama": -0.4612,
+   "sessizlik_orani": 0.2605,
+   "perde_ortalama_hz": -0.5394,
+   "perde_std_hz": -0.2162
+  },
+  "Ofke": {
+   "browDown": 0.0493,
+   "browInnerUp": -0.2226,
+   "browOuterUp": -0.0583,
+   "cheekSquint": 0.0016,
+   "eyeSquint": -0.1691,
+   "eyeWide": 0.305,
+   "jawOpen": 0.8946,
+   "mouthFrown": -0.1511,
+   "mouthFunnel": 0.7617,
+   "mouthPucker": 0.4423,
+   "mouthPress": -0.0101,
+   "mouthShrugLower": -0.1379,
+   "mouthSmile": -0.1798,
+   "mouthStretch": -0.2757,
+   "mouthUpperUp": -0.0012,
+   "noseSneer": 0.0016,
+   "rms_ortalama": 1.3763,
+   "sessizlik_orani": -1.1558,
+   "perde_ortalama_hz": 0.8671,
+   "perde_std_hz": 0.415
+  },
+  "Sakin": {
+   "browDown": -0.767,
+   "browInnerUp": 0.3737,
+   "browOuterUp": 0.2951,
+   "cheekSquint": -0.6054,
+   "eyeSquint": -0.1592,
+   "eyeWide": -0.5497,
+   "jawOpen": -0.5111,
+   "mouthFrown": -0.3007,
+   "mouthFunnel": -0.5884,
+   "mouthPucker": -0.2753,
+   "mouthPress": 0.483,
+   "mouthShrugLower": 0.7854,
+   "mouthSmile": 0.4452,
+   "mouthStretch": -0.2883,
+   "mouthUpperUp": -0.5052,
+   "noseSneer": -0.21,
+   "rms_ortalama": -0.6359,
+   "sessizlik_orani": 1.0964,
+   "perde_ortalama_hz": -0.5395,
+   "perde_std_hz": 0.4127
+  },
+  "Saskinlik": {
+   "browDown": -0.2276,
+   "browInnerUp": 0.2674,
+   "browOuterUp": 0.5332,
+   "cheekSquint": -0.0752,
+   "eyeSquint": -0.674,
+   "eyeWide": 0.9688,
+   "jawOpen": 0.1613,
+   "mouthFrown": -0.2248,
+   "mouthFunnel": 0.2502,
+   "mouthPucker": -0.0292,
+   "mouthPress": -0.2463,
+   "mouthShrugLower": -0.2228,
+   "mouthSmile": -0.3465,
+   "mouthStretch": -0.4276,
+   "mouthUpperUp": -0.2521,
+   "noseSneer": 0.0802,
+   "rms_ortalama": -0.1979,
+   "sessizlik_orani": -0.225,
+   "perde_ortalama_hz": 0.3977,
+   "perde_std_hz": 0.0677
+  },
+  "Tiksinme": {
+   "browDown": 1.1632,
+   "browInnerUp": -0.3977,
+   "browOuterUp": -0.519,
+   "cheekSquint": -0.133,
+   "eyeSquint": 1.1624,
+   "eyeWide": -0.6737,
+   "jawOpen": -0.1971,
+   "mouthFrown": 0.8655,
+   "mouthFunnel": -0.2522,
+   "mouthPucker": -0.0165,
+   "mouthPress": -0.6805,
+   "mouthShrugLower": 0.1651,
+   "mouthSmile": -0.0908,
+   "mouthStretch": 0.411,
+   "mouthUpperUp": 0.403,
+   "noseSneer": -0.1674,
+   "rms_ortalama": -0.3719,
+   "sessizlik_orani": 0.3349,
+   "perde_ortalama_hz": -0.4124,
+   "perde_std_hz": -0.1353
+  },
+  "Uzuntu": {
+   "browDown": -0.099,
+   "browInnerUp": -0.0759,
+   "browOuterUp": -0.2565,
+   "cheekSquint": -0.4747,
+   "eyeSquint": -0.1156,
+   "eyeWide": -0.3218,
+   "jawOpen": -0.3205,
+   "mouthFrown": 0.0299,
+   "mouthFunnel": -0.3756,
+   "mouthPucker": -0.0691,
+   "mouthPress": -0.1498,
+   "mouthShrugLower": 0.0296,
+   "mouthSmile": -0.4858,
+   "mouthStretch": -0.242,
+   "mouthUpperUp": -0.6581,
+   "noseSneer": -0.1373,
+   "rms_ortalama": -0.647,
+   "sessizlik_orani": 0.9856,
+   "perde_ortalama_hz": -0.6361,
+   "perde_std_hz": -0.4444
+  }
+ }
+}

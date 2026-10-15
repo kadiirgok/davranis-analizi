@@ -1,0 +1,44 @@
+{
+ "surum": "v2.1.1",
+ "baslik": "agirlikli_us05",
+ "yontem": "a_icerik_oncelikli",
+ "icerik": "llm_soft_slot_olasilik (mevcut; metin siniflandirici/birlesim SECILMEDI)",
+ "parametre": {
+  "tau_tum": 0.5
+ },
+ "esik_kurali": 0.02,
+ "genel_duygu_esigi": 0.55,
+ "olcum_katmani": "dogrudan_olcum + dogrudan_katman (kanit: yuz z>=2,6 / ses |z|>=2,25 + kisi referansi >=10 klip & >=30 sn; olasi: E1 kalibre liste) ; esikler DEGISMEDI",
+ "kapali_sinyal_kurali": "v2/v211/kapali_sinyal.py (kanit/olasi katmaninda kapali sinyal = ihlal)",
+ "val_n_uretilen": 581,
+ "val_n_planli": 611,
+ "val_metrik": {
+  "meld_wF1": 0.5067529683106821,
+  "meld_dogruluk": 0.5111111111111111,
+  "oyunculu_dogruluk": 0.625,
+  "mosei_n": 98,
+  "mosei_acc2_zorunlu": 0.6836734693877551,
+  "mosei_acc2_karar_verilen": 0.7415730337078652,
+  "mosei_acc2_kapsama": 0.9081632653061225,
+  "mosei_pozitif_payi": 0.5306122448979592
+ },
+ "hedef_skor": {
+  "llm": 0.605142145899479,
+  "metin": 0.5975180440373395,
+  "birlesim": 0.6190457875377587
+ },
+ "kaynak_sha256": {
+  "cikti_valdog/val_uretim_soft.jsonl": "712d39ec93c3315820bb12d46de87a66ee96ed77d777b632deefea2865b5a06e",
+  "cikti_egit/val_olasilik.jsonl": "abf0ce556dc05ac6ddb7e07b1f6201b402a7adb9bea6fd69d9390d5ba8b466c5",
+  "val_secim_sonuc.json": "bd24a303d9e620a8e3e9107fc4871c2a59be8bcc04847e78b1e3a73865dc6b0b",
+  "val_denetim.json": "c527b219fa9bb93d1ec8f0d2dd0aa6fa3d7a1a215e8f4c5109d99f4fa254bd18",
+  "kanit_referans_ayrisma.json": "ebbcf564e14a332672a8a7a808fb0ed28a2b148436099cf425124feea02a0956",
+  "kapali_sinyal.py": "85cc3c379435381418038d9fa573de6e5d1ec70fcd4985a9b7565d99c9952b1d",
+  "tutarlilik.py": "5a61caf8ba869291f60f8284a8c133ec625fde8124847cdd008d800a1bd3776f",
+  "val_secim.py": "ff308c04dc452ce5f860d3276f5ecd92d1b4ae79b94294415c2b8db3d245a91f",
+  "../v21/j10_dondurulmus.json": "0c9915e1b06e63bbd267115d3ec3ebe437189bd564e4e01e1b4a3231c7f24045",
+  "../davranis_model/dogrudan_olcum.py": "6ac9d313302a50589f054504f3b03d2178d45fc962b2786efe86e2acd8b257eb",
+  "../davranis_model/dogrudan_katman.py": "982e6a7b276fab5efe4f86ff4e03a377120f5acf93baf4459267361918a3f7d8",
+  "../davranis_model/olcum_dili.py": "df01c98d5889ca873f0e774b083d8d4686d655f9ba060bc675fc643acb28c8d1"
+ }
+}

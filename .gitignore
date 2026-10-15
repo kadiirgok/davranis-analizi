@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+# agirliklar HF/Kaggle model depolarinda dagitilir (git'e girmez; GitHub dosya siniri)
+agirliklar/*.pt
+agirliklar/duygu7_final/model.safetensors
+*.npz
+*.wav
+*.mp4
+*.tmp

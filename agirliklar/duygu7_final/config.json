@@ -1,0 +1,43 @@
+{
+  "architectures": [
+    "ViTForImageClassification"
+  ],
+  "attention_probs_dropout_prob": 0.0,
+  "dtype": "float32",
+  "encoder_stride": 16,
+  "hidden_act": "gelu",
+  "hidden_dropout_prob": 0.0,
+  "hidden_size": 768,
+  "id2label": {
+    "0": "Mutluluk",
+    "1": "Uzuntu",
+    "2": "Korku",
+    "3": "Ofke",
+    "4": "Tiksinme",
+    "5": "Saskinlik",
+    "6": "Notr"
+  },
+  "image_size": 224,
+  "initializer_range": 0.02,
+  "intermediate_size": 3072,
+  "label2id": {
+    "Korku": 2,
+    "Mutluluk": 0,
+    "Notr": 6,
+    "Ofke": 3,
+    "Saskinlik": 5,
+    "Tiksinme": 4,
+    "Uzuntu": 1
+  },
+  "layer_norm_eps": 1e-12,
+  "model_type": "vit",
+  "num_attention_heads": 12,
+  "num_channels": 3,
+  "num_hidden_layers": 12,
+  "patch_size": 16,
+  "pooler_act": "tanh",
+  "pooler_output_size": 768,
+  "qkv_bias": true,
+  "transformers_version": "5.0.0",
+  "use_cache": false
+}
