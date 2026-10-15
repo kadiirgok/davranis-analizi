@@ -112,7 +112,7 @@ Val'de çok karşılaştırma yapıldı; seçim sonuçları iyimser olabilir.
 rıza alınmamış kişilerin izlenmesi; sağlık (tıbbi/psikolojik) teşhisi. Çıktılar tek başına karar girdisi değildir.
 
 ## 7. v2.2 yol haritası
-Metin sınıflandırıcı (val: MELD 0,577 / MOSEI 0,850 tek başına) + davranış başlığı güven kalibrasyonu; gerçek Türkçe video değerlendirmesi; jestler; çok kişili sahneler.
+Metin sınıflandırıcı (val: MELD 0,577 / MOSEI 0,850 tek başına) + davranış başlığı güven kalibrasyonu; gerçek Türkçe video değerlendirmesi; jestler; çok kişili sahneler; **kısa ifadeler (≤1 sn)** için pencere-içi zaman çözünürlüğü (3 sn ortalama kısa gülümseme gibi olayları sulandırır; RAVDESS/webcam denemelerinde gözlendi).
 
 ## 8. Kullanım
 ```

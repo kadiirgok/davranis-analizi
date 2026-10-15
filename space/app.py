@@ -26,6 +26,7 @@ GPU_SN = int(os.environ.get("DAVRANIS_GPU_SN", "120"))
 os.environ.setdefault("DAVRANIS_4BIT", "1")
 os.environ.setdefault("GRADIO_ANALYTICS_ENABLED", "False")
 
+ORNEK_DIZIN = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ornek")
 KOD_DESEN = ["*.py", "davranis_model/*", "*.json", "yapilandirma/*", "olcum_modelleri/*"]
 _kilit = threading.RLock()
 _kok = None
@@ -184,8 +185,10 @@ def llm_katmani(ctx):
         return gr.update(), f"_Model yorumu üretilemedi ({type(e).__name__}); kural tabanlı yorum geçerlidir._"
     finally:
         try:                                                  # girdi dosyası işleme biter bitmez silinir
-            if ctx.get("yol") and os.path.exists(ctx["yol"]):
-                os.remove(ctx["yol"])
+            yol = ctx.get("yol")
+            korunan = os.path.abspath(ORNEK_DIZIN)
+            if yol and os.path.exists(yol) and not os.path.abspath(yol).startswith(korunan):   # ornek klipler silinmez
+                os.remove(yol)
         except Exception:
             pass
     if r.get("hata"):
@@ -238,6 +241,19 @@ def arayuz():
             with gr.Column():
                 cikti1 = gr.Markdown()
                 cikti2 = gr.Markdown()
+        ornekler = [
+            ("Referans: nötr (RAVDESS 01-01-01-01-01-01-04)", "01-01-01-01-01-01-04.mp4"),
+            ("Referans: sakin (01-01-02-01-01-01-04)", "01-01-02-01-01-01-04.mp4"),
+            ("Referans: sakin, güçlü (01-01-02-02-01-01-04)", "01-01-02-02-01-01-04.mp4"),
+            ("Mutlu, güçlü (01-01-03-02-01-01-04)", "01-01-03-02-01-01-04.mp4"),
+            ("Kızgın, güçlü (01-01-05-02-01-01-04)", "01-01-05-02-01-01-04.mp4"),
+            ("Üzgün, güçlü (01-01-04-02-01-01-04)", "01-01-04-02-01-01-04.mp4"),
+            ("Şaşkın, güçlü (01-01-08-02-01-01-04)", "01-01-08-02-01-01-04.mp4"),
+        ]
+        var = [(a, os.path.join(ORNEK_DIZIN, f)) for a, f in ornekler if os.path.exists(os.path.join(ORNEK_DIZIN, f))]
+        if var:
+            gr.Examples(examples=[[p] for _, p in var], inputs=[video], example_labels=[a for a, _ in var], label="Örnek klipler (RAVDESS Actor_04; önce referans klipleri, sonra duygu klibini analiz edin)")
+            gr.Markdown("Örnek klipler: RAVDESS (Livingstone & Russo 2018, PLoS ONE 13(5): e0196391), CC BY-NC-SA 4.0; etiketler dosya adı kodundandır. Oyunculu kayıtlardır, doğal konuşmayı temsil etmez.")
         btn.click(hizli, [video, ses, oturum], [cikti1, oturum, ctx], api_name="olcum").then(
             lambda: "_Model katmanı çalışıyor (ilk istekte soğuk başlangıç birkaç dakika sürebilir)…_", None, cikti2).then(
             llm_katmani, [ctx], [cikti1, cikti2], api_name="yorum")
