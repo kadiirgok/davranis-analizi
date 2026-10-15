@@ -37,6 +37,45 @@ def log(*a):
     print(f"[{time.strftime('%H:%M:%S')}]", *a, flush=True)
 
 
+def _surumler():
+    import importlib.metadata as md
+    s = {}
+    for p in ("torch", "torchvision", "transformers", "gradio", "spaces"):
+        try:
+            s[p] = md.version(p)
+        except Exception:
+            s[p] = None
+    return s
+
+
+log("surumler:", _surumler())
+
+MODEL_REPO = os.environ.get("MODEL_REPO", "akadirgok/davranis-v2-1-1")
+TOKEN = os.environ.get("HF_TOKEN")
+YEREL_KOK = os.environ.get("DAVRANIS_YEREL_KOK")             # gelistirme: depo klasoru (indirme yok)
+GPU_SN = int(os.environ.get("DAVRANIS_GPU_SN", "120"))
+os.environ.setdefault("DAVRANIS_4BIT", "1")
+os.environ.setdefault("GRADIO_ANALYTICS_ENABLED", "False")
+
+KOD_DESEN = ["*.py", "davranis_model/*", "*.json", "yapilandirma/*", "olcum_modelleri/*"]
+_kilit = threading.RLock()
+_kok = None
+_olcum = None
+_analizci = None
+C = None                                                      # cikarim_v211 modulu
+
+
+def log(*a):
+    print(f"[{time.strftime('%H:%M:%S')}]", *a, flush=True)
+
+
+try:
+    import importlib.metadata as _md
+    log("surumler:", {p: _md.version(p) for p in ("torch", "torchvision", "transformers", "gradio", "spaces") if _md.distribution(p)} )
+except Exception as _e:
+    log("surum bilgisi okunamadi:", type(_e).__name__, str(_e)[:100])
+
+
 def kod_hazirla():
     """Kod + kucuk dosyalar (agirlik YOK): hizli katman icin yeterli."""
     global _kok, C

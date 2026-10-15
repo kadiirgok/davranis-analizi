@@ -1,5 +1,6 @@
-# egitim ortami: transformers 5.16.1 / torch 2.11 (Kaggle pip listesi). ZeroGPU'nun destekledigi torch surumu Space ayarlarinda belirtilir.
-torch
+# egitim ortami: transformers 5.16.1 / torch 2.11 (Kaggle pip listesi). Space imajindaki torch 2.13.0 (surum gunlugu); torchvision (roi_align) imajda YOK -> eklendi.
+torch==2.13.0
+torchvision
 transformers==5.16.1
 accelerate
 bitsandbytes>=0.46.1

@@ -8,7 +8,7 @@ sdk_version: 6.29.0
 app_file: app.py
 pinned: false
 license: other
-short_description: Olcume dayali, temkinli davranis gostergeleri (yalan tespiti degildir)
+short_description: Olcume dayali, temkinli davranis gostergeleri
 startup_duration_timeout: 1h
 ---
 

@@ -1,5 +1,6 @@
 # Egitim/test ortami: transformers 5.16.1, torch 2.11 (CUDA 12.8). Tam hat GPU ister (Qwen2.5-7B nf4).
 torch
+torchvision
 transformers==5.16.1
 accelerate
 bitsandbytes>=0.46.1
