@@ -7,12 +7,17 @@ sdk: gradio
 sdk_version: 6.29.0
 app_file: app.py
 pinned: false
-license: other
+license: mit
 short_description: Olcume dayali, temkinli davranis gostergeleri
 startup_duration_timeout: 1h
 ---
 
 # Davranış Analizi v2.1.1 — Space
+
+> ⚠️ **Yalan tespiti değildir.** Ölçüm göstergeleri tek başına duygu kanıtı değildir.
+> 🔒 **Kullanıcı videosu/sesi saklanmaz:** yalnızca işlenmek için geçici kullanılır, işlem bitince silinir; eğitime katılmaz.
+> 🧪 **Yalnızca araştırma/demo amaçlıdır;** işe alım, gözetim, sağlık teşhisi, kimlik tanıma için kullanılamaz.
+> Kod MIT; ağırlıklar CC BY-NC-SA 4.0 (model deposu).
 
 Gradio + ZeroGPU. **Özel (private)** model deposundan (`MODEL_REPO`, Space secret `HF_TOKEN`) kod ve ağırlıkları indirir.
 

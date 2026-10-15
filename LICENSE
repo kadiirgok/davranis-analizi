@@ -1,28 +1,29 @@
-Davranış Analizi v2.1.1 — Araştırma / Ticari Olmayan Kullanım Koşulları
-=====================================================================
-TASLAK: Bu metin bir hukuki görüş değildir; kamuya açılmadan önce hukuki gözden geçirme gerekir.
+MIT License
 
-1. Kapsam
-Bu koşullar bu depodaki model ağırlıkları (agirliklar/), kod (*.py), yapılandırma ve belgeler için geçerlidir. Üçüncü taraf bileşenler (madde 5) kendi lisanslarına tabidir.
+Copyright (c) 2026 Abdulkadir Gök
 
-2. İzin verilen kullanım
-Yalnızca araştırma, eğitim ve ticari olmayan kullanım için; kopyalama, çalıştırma ve değiştirme serbesttir. Değiştirilmiş sürümler aynı koşullarla ve bu dosyanın korunmasıyla paylaşılmalıdır.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-3. Yasak kullanım
-a) Ticari kullanım (doğrudan ya da dolaylı gelir getiren ürün/hizmet; ücretli API dahil).
-b) İşe alım/personel değerlendirme, kredi/sigorta kararı, adli süreç, sınır/güvenlik taraması, gözetim, kimlik tanıma.
-c) Yalan, niyet, suç ya da kişilik tespiti iddiasıyla kullanım; tıbbi/psikolojik teşhis.
-d) Rızası alınmamış kişilerin kaydedilmesi/izlenmesi; çocuklar ve hassas gruplar hakkında karar verme.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-4. Eğitim verisi koşulları
-Ağırlıklar şu verilerle eğitilmiş/değerlendirilmiştir ve ilgili veri koşullarına tabidir: CREMA-D (araştırma/ticari olmayan), RAVDESS (CC BY-NC-SA 4.0),
-MELD (GPL-3.0 depo + dizi içeriği telifi; yalnız araştırma), CMU-MOSEI (lisansı doğrulanamadı; yalnız araştırma varsayımı), MUStARD++ (yalnız değerlendirme; "research purposes"),
-FER2013 / AffectNet / RAF-DB (araştırma/ticari olmayan). CC BY-NC-SA 4.0'ın ShareAlike şartının ağırlıklara etkisi netleştirilmemiştir.
-Bu depoda bu veri setlerine ait klip, transkript ya da klip düzeyinde türev yoktur; yalnızca bir özet istatistik (yapilandirma/referans_populasyon.json) bulunur.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
-5. Üçüncü taraf bileşenler
-Qwen2.5-7B-Instruct (Apache-2.0; depoda yok, ayrıca indirilir), Whisper (MIT; depoda yok), MediaPipe Face Landmarker (Apache-2.0; olcum_modelleri/face_landmarker.task),
-YuNet — OpenCV Zoo (MIT; olcum_modelleri/face_detection_yunet_2023mar.onnx), BlazeFace PyTorch dönüşümü (Apache-2.0; davranis_model/BLAZEFACE_LICENSE.txt), librosa (ISC).
-
-6. Garanti yok, sorumluluk
-Yazılım ve ağırlıklar "olduğu gibi" sunulur; doğruluk garantisi yoktur (README §4–§5: çıtaların çoğu karşılanmamıştır). Çıktılar tek başına karar girdisi değildir.
+---
+Scope: this MIT license covers the code in this repository (cikarim_v211.py,
+davranis_model/*.py, hedef_v2.py, sablon.py, space/, testler/). It does NOT
+cover the model weights (agirliklar/), see LICENSE-WEIGHTS. Third-party files
+keep their own licenses: olcum_modelleri/face_landmarker.task (MediaPipe,
+Apache-2.0), olcum_modelleri/face_detection_yunet_2023mar.onnx (OpenCV Zoo,
+MIT), davranis_model/blazeface.pth + BLAZEFACE_LICENSE.txt (Apache-2.0).
