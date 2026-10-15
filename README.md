@@ -43,6 +43,16 @@ Kod katmanı (ölçüm, katman ataması, ölçüm cümlesi, anlam/alternatif sö
 | Kanıt tam (oyunculu) | ≥%15 | %16,2 | %10,0 [7,9; 12,1] | KALDI |
 | İşaretli (oyunculu) | ≥%50 | %25,8 | %61,9 | GEÇTİ (çoğu "olası") |
 
+### RAVDESS sağlık testi (n=4, Actor_04, eğitimde görülmemiş; yalnız akıl sağlığı)
+| etiket | davranış duygusu | içerik duygusu | birleşik |
+|---|---|---|---|
+| mutlu | çıkarım yapılamıyor (Şaşkınlık 0,53) | Şaşkınlık 0,56 | Şaşkınlık 0,58 ✗ |
+| kızgın | çıkarım yapılamıyor (Öfke 0,53) | Şaşkınlık 0,54 | **Öfke 0,68** ✓ |
+| üzgün | çıkarım yapılamıyor (Şaşkınlık 0,33) | Nötr 1,00 | Nötr 1,00 ✗ (içerik davranışı bastırdı) |
+| şaşkın | şaşkın (0,89) | Şaşkınlık 0,55 | **Şaşkınlık 0,94** ✓ |
+
+Sabit cümleli kayıtlarda söz nötrdür; birleşik değerlendirme nötre kayabilir, davranış duygusuna bakın. Ayrıntı: [MODEL_CARD.md](MODEL_CARD.md).
+
 Duygu doğruluğu v2.1'e göre iyileşmedi; v2.1.1'in kazanımı ölçüm katmanının dürüstlüğüdür (kapalı sinyal 0, tutarlılık 0, nedensel referans).
 
 ## Kurulum ve kullanım

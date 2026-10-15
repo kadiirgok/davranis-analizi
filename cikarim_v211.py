@@ -585,8 +585,20 @@ class Analizci:
                 metin, j, ek = m.uret_sablon(ornek, fab)
         except Exception as e:
             return {"hata": f"{type(e).__name__}: {str(e)[:200]}", "transkript": tr[0]}
-        gd = genel_duygu(pb, ek.get("slot_p"), self.cfg["parametre"]["tau_tum"], self.cfg["genel_duygu_esigi"])
-        return {"mod": mod, "t": ornek["t"][0], "transkript": ornek["transkript"][0], "json": j, "genel_duygu": gd, "icerik": ek.get("icerik"),
+        tau = self.cfg["parametre"]["tau_tum"]
+        gd = genel_duygu(pb, ek.get("slot_p"), tau, self.cfg["genel_duygu_esigi"])
+        # UC AYRI CIKTI (yalniz sunum; hesap degismez): davranis (olay.duygu), icerik (slot olasiliklari), birlesik (genel_duygu)
+        sp_ = np.asarray(ek["sinif_p"]).reshape(-1, len(self.siniflar)).mean(0)
+        olay = (j or {}).get("olay") or {}
+        ic, icw, gec = soft_icerik(ek.get("slot_p"))
+        uc = {"davranis": {"duygu": olay.get("duygu"), "en_olasi": olay.get("en_olasi"), "esik": self.cfg["genel_duygu_esigi"],
+                           "dagilim": {s: round(float(q), 4) for s, q in zip(self.siniflar, sp_)}},
+              "icerik": {"gecerli": bool(gec and icw > 0), "yok_olasiligi": round(1.0 - float(icw), 4),
+                         "dagilim": {s: round(float(q), 4) for s, q in zip(SINIFLAR_8, ic)}, "transkript": ornek["transkript"][0]},
+              "birlesik": {**gd, "tau": tau, "davranis_basligi_max": round(float(np.max(pb)), 4),
+                           "aciklama": ("Davranış güveni düşük (<τ=%.1f) ve içerik geçerli olduğu için içerik belirledi" % tau) if gd["kaynak"] == "icerik"
+                           else ("Davranış belirledi" + ("" if float(np.max(pb)) >= tau else " (davranış güveni düşük ama içerik geçersiz/yok)"))}}
+        return {"mod": mod, "t": ornek["t"][0], "transkript": ornek["transkript"][0], "json": j, "genel_duygu": gd, "uc_cikti": uc, "icerik": ek.get("icerik"),
                 "sinif_p_model": np.asarray(ek["sinif_p"]).reshape(-1, len(self.siniflar)).tolist(), "siniflar": self.siniflar,
                 "yapilandirma_sha256": self.cfg["_sha256"][:12], "sure_sn": round(time.time() - T, 2), "uyari": UYARI}
 

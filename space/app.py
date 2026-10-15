@@ -193,14 +193,25 @@ def llm_katmani(ctx):
             pass
     if r.get("hata"):
         return gr.update(), f"_Model yorumu üretilemedi: {r['hata']}_"
-    gd = r["genel_duygu"]
-    s = [f"### Model yorumu (LLM katmanı) — pencere {ctx['pencere_no']}"]
-    if r.get("transkript"):
-        s.append(f"**Söylenen (otomatik transkript):** {r['transkript']}")
-    karar = gd["sinif"] if gd["secici"] else "çıkarım yapılamıyor"
-    s.append(f"**Genel duygu dağılımı:** en olası sınıf **{gd['sinif']}** (p={gd['p']:.2f}); karar: **{karar}** (eşik 0,55)")
-    tablo = ["| sınıf | olasılık |", "|---|---|"] + [f"| {k} | {v:.2f} |" for k, v in sorted(gd["dagilim"].items(), key=lambda kv: -kv[1])]
-    s.append("\n".join(tablo))
+    uc = r["uc_cikti"]
+    dv, ic, bl = uc["davranis"], uc["icerik"], uc["birlesik"]
+
+    def tablo(d):
+        return "\n".join(["| sınıf | olasılık |", "|---|---|"] + [f"| {k} | {v:.2f} |" for k, v in sorted(d.items(), key=lambda kv: -kv[1])])
+    en = dv.get("en_olasi") or {}
+    dkarar = dv.get("duygu") or "—"
+    s = [f"### Model çıktıları (LLM katmanı) — pencere {ctx['pencere_no']}"]
+    s.append(f"#### 1) Davranış duygusu (yüz + ses)\nKarar: **{dkarar}**" + (f" · en olası sınıf **{en.get('sinif')}** (p={en.get('p', 0):.2f}; eşik {dv['esik']:.2f}, altında \"çıkarım yapılamıyor\")" if en else ""))
+    s.append(tablo(dv["dagilim"]))
+    s.append(f"#### 2) Söylenen içeriğin duygusu\n**Transkript:** {ic['transkript'] or '(konuşma yok)'}")
+    if ic["gecerli"]:
+        s.append(tablo(ic["dagilim"]))
+    else:
+        s.append("_İçerik duygusu belirlenemedi (konuşma yok / içerik sinyali yok)._")
+    karar = bl["sinif"] if bl["secici"] else "çıkarım yapılamıyor"
+    s.append(f"#### 3) Birleşik değerlendirme\nEn olası sınıf **{bl['sinif']}** (p={bl['p']:.2f}); karar: **{karar}** (eşik 0,55) · {bl['aciklama']} (davranış başlığı güveni {bl['davranis_basligi_max']:.2f}).")
+    s.append(tablo(bl["dagilim"]))
+    s.append("_Not: RAVDESS gibi sabit cümleli kayıtlarda söz nötrdür; birleşik değerlendirme bu durumda nötre kayabilir — davranış duygusuna bakın._")
     gy = ((r.get("json") or {}).get("olay") or {}).get("genel_yorum")
     if gy:
         s.append("**Genel yorum:** " + gy)

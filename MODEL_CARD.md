@@ -93,6 +93,24 @@ Kişi referansı yeterli oran (test alt kümesi, nedensel): MELD 582/798, MUStAR
 Literatür bağlamı (doğrudan kıyas DEĞİL; bu verilerde eğitimli/ince ayarlı sistemler): MELD w-F1 62–73, MOSEI Acc-2 ≈85, MUStARD++ F1 72–78.
 Val'de çok karşılaştırma yapıldı; seçim sonuçları iyimser olabilir.
 
+### RAVDESS sağlık testi (n=4, Actor_04, eğitimde görülmemiş)
+Yalnızca akıl sağlığı testidir (n=4; istatistiksel anlam yok). RAVDESS (CC BY-NC-SA 4.0) Actor_04, v2 test bölümü; güçlü yoğunluk, konuşma; etiketler dosya adı kodundan.
+10 nötr/sakin referans klibi sırayla işlendi (kişi referansı dolu), sonra 4 duygu klibi; Space (ZeroGPU), canlı mod, eşik/kural değişmedi.
+Üç çıktı ayrı gösterilir: **davranış duygusu** (`olay.duygu`, yüz+ses sınıf başlığı, eşik 0,55), **içerik duygusu** (söylenen metnin slot olasılıkları), **birleşik** (`genel_duygu`).
+
+| klip (etiket) | davranış duygusu (en olası, p) | içerik duygusu | birleşik (kaynak) | davranış doğru mu |
+|---|---|---|---|---|
+| mutlu | çıkarım yapılamıyor (Şaşkınlık 0,53; Mutluluk 0,41) | Şaşkınlık 0,56 / Nötr 0,42 | Şaşkınlık 0,58 (davranış başlığı) | hayır (karar yok; en olası yanlış) |
+| kızgın | çıkarım yapılamıyor (Öfke 0,53; Şaşkınlık 0,37) | Şaşkınlık 0,54 / Nötr 0,42 | **Öfke 0,68** (davranış başlığı) | karar yok; en olası doğru |
+| üzgün | çıkarım yapılamıyor (Şaşkınlık 0,33; Üzüntü 0,19) | **Nötr 1,00** | **Nötr 1,00** (içerik belirledi: davranış güveni 0,26 < 0,5) | karar yok (üzüntü ikinci sırada) |
+| şaşkın | **şaşkın** (Şaşkınlık 0,89) | Şaşkınlık 0,55 / Nötr 0,42 | **Şaşkınlık 0,94** (davranış başlığı) | evet |
+
+Okuma:
+- Sabit cümleli kayıtlarda ("Kids are talking by the door") söz nötrdür; **üzgün klipte birleşik değerlendirme davranışın düşük güvenini içerik nötrüyle bastırıp "Nötr %100" üretti**; davranış duygusu bu klipte karar vermedi ("çıkarım yapılamıyor"). Birleşik değil, davranış duygusuna bakılmalıdır.
+- `olay.duygu` (model başlığı) ile birleşikte kullanılan davranış başlığı (`agirlikli_us05`) iki ayrı başlıktır; bu yüzden mutlu/kızgın kliplerde davranış duygusu eşik altındayken birleşik, davranış başlığıyla eşiği geçebilir.
+- Mutlu klip yanlış sınıflandı (Şaşkınlık); ölçüm katmanı bu klipte gülümseme yönünde işaretler gösterdi (üst dudak yukarı kalkması kanıt, ağız köşesi olası) — ölçüm ile sınıf başlığı tutarsız olabilir.
+- Referanssız (yeni oturum) aynı klipler: ölçüm katmanı daha az, yalnız "olası" işaret üretir; sınıf çıktıları, modelin çalıştığı 3 klipte (mutlu, üzgün, şaşkın) aynı kaldı; kızgın klipte referanssız ölçüm eşiği geçmediği için model çalışmadı.
+
 ## 5. Dürüst sınırlar
 - **Uyum (söz–davranış) iddiası kapalı.** MUStARD++ dev'de uyum kuralı AUC ≈0,50 (<0,60). Model sarkazmı/uyumsuzluğu ölçemez.
 - **Yalan tespiti değildir;** kişilik/ruh hali/niyet çıkarımı yapmaz. `ruh_hali` yalnız kural koşulu sağlanırsa ve "(kanıt katmanı)" ibaresiyle yazılır.
@@ -112,7 +130,7 @@ Val'de çok karşılaştırma yapıldı; seçim sonuçları iyimser olabilir.
 rıza alınmamış kişilerin izlenmesi; sağlık (tıbbi/psikolojik) teşhisi. Çıktılar tek başına karar girdisi değildir.
 
 ## 7. v2.2 yol haritası
-Metin sınıflandırıcı (val: MELD 0,577 / MOSEI 0,850 tek başına) + davranış başlığı güven kalibrasyonu; gerçek Türkçe video değerlendirmesi; jestler; çok kişili sahneler; **kısa ifadeler (≤1 sn)** için pencere-içi zaman çözünürlüğü (3 sn ortalama kısa gülümseme gibi olayları sulandırır; RAVDESS/webcam denemelerinde gözlendi).
+Metin sınıflandırıcı (val: MELD 0,577 / MOSEI 0,850 tek başına) + davranış başlığı güven kalibrasyonu; gerçek Türkçe video değerlendirmesi; jestler; çok kişili sahneler; birleşimde nötr içerik davranışı bastırıyor — nötr-duyarlı kural MELD'de kayıp verdi (denendi), kaynak güveni kalibrasyonu gerekli; **kısa ifadeler (≤1 sn)** için pencere-içi zaman çözünürlüğü (3 sn ortalama kısa gülümseme gibi olayları sulandırır; RAVDESS/webcam denemelerinde gözlendi).
 
 ## 8. Kullanım
 ```
