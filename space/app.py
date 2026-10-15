@@ -198,10 +198,9 @@ def llm_katmani(ctx):
 
     def tablo(d):
         return "\n".join(["| sınıf | olasılık |", "|---|---|"] + [f"| {k} | {v:.2f} |" for k, v in sorted(d.items(), key=lambda kv: -kv[1])])
-    en = dv.get("en_olasi") or {}
-    dkarar = dv.get("duygu") or "—"
+    dkarar = dv["duygu"]
     s = [f"### Model çıktıları (LLM katmanı) — pencere {ctx['pencere_no']}"]
-    s.append(f"#### 1) Davranış duygusu (yüz + ses)\nKarar: **{dkarar}**" + (f" · en olası sınıf **{en.get('sinif')}** (p={en.get('p', 0):.2f}; eşik {dv['esik']:.2f}, altında \"çıkarım yapılamıyor\")" if en else ""))
+    s.append(f"#### 1) Davranış duygusu (yüz + ses)" + chr(10) + f"Karar: **{dkarar}** · en olası sınıf **{dv['sinif']}** (p={dv['p']:.2f}; eşik {dv['esik']:.2f}, altında \"çıkarım yapılamıyor\")")
     s.append(tablo(dv["dagilim"]))
     s.append(f"#### 2) Söylenen içeriğin duygusu\n**Transkript:** {ic['transkript'] or '(konuşma yok)'}")
     if ic["gecerli"]:

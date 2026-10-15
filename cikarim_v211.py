@@ -588,11 +588,15 @@ class Analizci:
         tau = self.cfg["parametre"]["tau_tum"]
         gd = genel_duygu(pb, ek.get("slot_p"), tau, self.cfg["genel_duygu_esigi"])
         # UC AYRI CIKTI (yalniz sunum; hesap degismez): davranis (olay.duygu), icerik (slot olasiliklari), birlesik (genel_duygu)
-        sp_ = np.asarray(ek["sinif_p"]).reshape(-1, len(self.siniflar)).mean(0)
         olay = (j or {}).get("olay") or {}
         ic, icw, gec = soft_icerik(ek.get("slot_p"))
-        uc = {"davranis": {"duygu": olay.get("duygu"), "en_olasi": olay.get("en_olasi"), "esik": self.cfg["genel_duygu_esigi"],
-                           "dagilim": {s: round(float(q), 4) for s, q in zip(self.siniflar, sp_)}},
+        pbn = np.asarray(pb, float)
+        ib = int(np.argmax(pbn))
+        esik = self.cfg["genel_duygu_esigi"]
+        uc = {"davranis": {"sinif": self.siniflar[ib], "p": float(pbn[ib]), "esik": esik,
+                           "duygu": self.siniflar[ib] if pbn[ib] >= esik else CIKARIM_YOK,       # birlesikte kullanilan baslik (agirlikli_us05) ile AYNI
+                           "dagilim": {s: round(float(q), 4) for s, q in zip(self.siniflar, pbn)},
+                           "olay_duygu_ham": olay.get("duygu"), "olay_en_olasi_ham": olay.get("en_olasi")},      # modelin ham alani (json.olay.duygu) adiyla korunur
               "icerik": {"gecerli": bool(gec and icw > 0), "yok_olasiligi": round(1.0 - float(icw), 4),
                          "dagilim": {s: round(float(q), 4) for s, q in zip(SINIFLAR_8, ic)}, "transkript": ornek["transkript"][0]},
               "birlesik": {**gd, "tau": tau, "davranis_basligi_max": round(float(np.max(pb)), 4),

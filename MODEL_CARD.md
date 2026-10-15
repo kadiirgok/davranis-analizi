@@ -63,6 +63,8 @@ Taban modeller: Qwen2.5-7B-Instruct (Apache-2.0), Whisper-large-v3-turbo (MIT), 
 **Lisans (kod ve ağırlıklar ayrı):** kod (`cikarim_v211.py`, `davranis_model/`, `space/`, testler) → **MIT** (`LICENSE`); ağırlıklar (`agirliklar/`) ve model çıktıları → **CC BY-NC-SA 4.0**
 (`LICENSE-WEIGHTS`; ticari olmayan, RAVDESS CC BY-NC-SA ile uyumlu). **Eğitim verisi koşulları (MELD, CMU-MOSEI, CREMA-D, RAVDESS) ayrıca geçerlidir; bu bir hukuki görüş değildir.**
 
+**Ağırlıklar şu veri setleriyle eğitilmiş bileşenler içerir: FER2013, AffectNet, RAF-DB (duygu7 ViT), MELD, CMU-MOSEI, CREMA-D, RAVDESS. Bu veri setlerinin koşulları ayrıca geçerlidir; erişim bu nedenle kapılıdır (gated: manuel onay). Bu bir hukuki görüş değildir.**
+
 **Bu depoda MELD/MOSEI/MUStARD++/CREMA-D/RAVDESS klibi, transkripti, öğretmen çıktısı ya da klip düzeyinde türevi YOKTUR.** Tek veri türevi:
 `yapilandirma/referans_populasyon.json` — MELD train'den türetilmiş **toplu özet istatistik** (8625 klip; 52 yüz + 4 ses özelliğinin ortalama/std'si, z-skoru referansı); **ham veri, klip ya da metin içermez**.
 
@@ -96,20 +98,21 @@ Val'de çok karşılaştırma yapıldı; seçim sonuçları iyimser olabilir.
 ### RAVDESS sağlık testi (n=4, Actor_04, eğitimde görülmemiş)
 Yalnızca akıl sağlığı testidir (n=4; istatistiksel anlam yok). RAVDESS (CC BY-NC-SA 4.0) Actor_04, v2 test bölümü; güçlü yoğunluk, konuşma; etiketler dosya adı kodundan.
 10 nötr/sakin referans klibi sırayla işlendi (kişi referansı dolu), sonra 4 duygu klibi; Space (ZeroGPU), canlı mod, eşik/kural değişmedi.
-Üç çıktı ayrı gösterilir: **davranış duygusu** (`olay.duygu`, yüz+ses sınıf başlığı, eşik 0,55), **içerik duygusu** (söylenen metnin slot olasılıkları), **birleşik** (`genel_duygu`).
+Üç çıktı ayrı gösterilir: **davranış duygusu** (yüz+ses sınıf başlığı = birleşikte kullanılan `agirlikli_us05`; eşik 0,55, altında "çıkarım yapılamıyor"),
+**içerik duygusu** (söylenen metnin slot olasılıkları), **birleşik** (`genel_duygu`). Modelin ham `olay.duygu` alanı JSON çıktısında adıyla durur (`json.olay.duygu`, `uc_cikti.davranis.olay_duygu_ham`).
 
-| klip (etiket) | davranış duygusu (en olası, p) | içerik duygusu | birleşik (kaynak) | davranış doğru mu |
+| klip (etiket) | davranış duygusu (karar; en olası, p) | içerik duygusu | birleşik (kaynak) | doğru mu |
 |---|---|---|---|---|
-| mutlu | çıkarım yapılamıyor (Şaşkınlık 0,53; Mutluluk 0,41) | Şaşkınlık 0,56 / Nötr 0,42 | Şaşkınlık 0,58 (davranış başlığı) | hayır (karar yok; en olası yanlış) |
-| kızgın | çıkarım yapılamıyor (Öfke 0,53; Şaşkınlık 0,37) | Şaşkınlık 0,54 / Nötr 0,42 | **Öfke 0,68** (davranış başlığı) | karar yok; en olası doğru |
-| üzgün | çıkarım yapılamıyor (Şaşkınlık 0,33; Üzüntü 0,19) | **Nötr 1,00** | **Nötr 1,00** (içerik belirledi: davranış güveni 0,26 < 0,5) | karar yok (üzüntü ikinci sırada) |
-| şaşkın | **şaşkın** (Şaşkınlık 0,89) | Şaşkınlık 0,55 / Nötr 0,42 | **Şaşkınlık 0,94** (davranış başlığı) | evet |
+| mutlu | Şaşkınlık (0,58; Mutluluk 0,39) | Şaşkınlık 0,56 / Nötr 0,42 | Şaşkınlık 0,58 (davranış) | hayır (Mutluluk ikinci) |
+| kızgın | **Öfke** (0,68; Şaşkınlık 0,24) | Şaşkınlık 0,54 / Nötr 0,42 | **Öfke 0,68** (davranış) | evet |
+| üzgün | çıkarım yapılamıyor (Şaşkınlık 0,26; Üzüntü 0,25) | **Nötr 1,00** | **Nötr 1,00** (içerik belirledi: davranış güveni 0,26 < τ=0,5) | hayır (davranış karar vermedi; birleşik nötre kaydı) |
+| şaşkın | **Şaşkınlık** (0,94) | Şaşkınlık 0,55 / Nötr 0,42 | **Şaşkınlık 0,94** (davranış) | evet |
 
 Okuma:
-- Sabit cümleli kayıtlarda ("Kids are talking by the door") söz nötrdür; **üzgün klipte birleşik değerlendirme davranışın düşük güvenini içerik nötrüyle bastırıp "Nötr %100" üretti**; davranış duygusu bu klipte karar vermedi ("çıkarım yapılamıyor"). Birleşik değil, davranış duygusuna bakılmalıdır.
-- `olay.duygu` (model başlığı) ile birleşikte kullanılan davranış başlığı (`agirlikli_us05`) iki ayrı başlıktır; bu yüzden mutlu/kızgın kliplerde davranış duygusu eşik altındayken birleşik, davranış başlığıyla eşiği geçebilir.
-- Mutlu klip yanlış sınıflandı (Şaşkınlık); ölçüm katmanı bu klipte gülümseme yönünde işaretler gösterdi (üst dudak yukarı kalkması kanıt, ağız köşesi olası) — ölçüm ile sınıf başlığı tutarsız olabilir.
-- Referanssız (yeni oturum) aynı klipler: ölçüm katmanı daha az, yalnız "olası" işaret üretir; sınıf çıktıları, modelin çalıştığı 3 klipte (mutlu, üzgün, şaşkın) aynı kaldı; kızgın klipte referanssız ölçüm eşiği geçmediği için model çalışmadı.
+- Davranış ve birleşik bölümleri artık aynı başlığı kullanır; çelişmezler.
+- Sabit cümleli kayıtlarda ("Kids are talking by the door") söz nötrdür; **üzgün klipte davranışın düşük güveni içerik nötrüyle bastırılıp "Nötr %100" üretildi**. Davranış duygusuna bakılmalıdır: karar vermedi ("çıkarım yapılamıyor"), Üzüntü ikinci sırada.
+- Mutlu klip yanlış sınıflandı (Şaşkınlık); ölçüm katmanı aynı klipte gülümseme yönünde işaretler gösterdi (üst dudak yukarı kalkması kanıt, ağız köşesi olası) — ölçüm ile sınıf başlığı tutarsız olabilir.
+- Referanssız (yeni oturum) aynı klipler: ölçüm katmanı daha az, yalnız "olası" işaret üretir; sınıf çıktıları modelin çalıştığı 3 klipte aynı kaldı; kızgın klipte referanssız ölçüm eşiği geçmediği için model çalışmadı.
 
 ## 5. Dürüst sınırlar
 - **Uyum (söz–davranış) iddiası kapalı.** MUStARD++ dev'de uyum kuralı AUC ≈0,50 (<0,60). Model sarkazmı/uyumsuzluğu ölçemez.
@@ -128,6 +131,8 @@ Okuma:
 ## 6. Kullanım dışı alanlar
 İşe alım/değerlendirme, kredi/sigorta, adli süreç, sınır/güvenlik taraması, gözetim, çocuklar/hassas gruplar hakkında karar verme, **kimlik tanıma**; yalan/niyet/suç tespiti;
 rıza alınmamış kişilerin izlenmesi; sağlık (tıbbi/psikolojik) teşhisi. Çıktılar tek başına karar girdisi değildir.
+
+**Kaggle:** Kaggle sürümü özeldir (Kaggle'da kapılı erişim yoktur); ağırlıklar HF'de kapılı erişimle dağıtılır.
 
 ## 7. v2.2 yol haritası
 Metin sınıflandırıcı (val: MELD 0,577 / MOSEI 0,850 tek başına) + davranış başlığı güven kalibrasyonu; gerçek Türkçe video değerlendirmesi; jestler; çok kişili sahneler; birleşimde nötr içerik davranışı bastırıyor — nötr-duyarlı kural MELD'de kayıp verdi (denendi), kaynak güveni kalibrasyonu gerekli; **kısa ifadeler (≤1 sn)** için pencere-içi zaman çözünürlüğü (3 sn ortalama kısa gülümseme gibi olayları sulandırır; RAVDESS/webcam denemelerinde gözlendi).

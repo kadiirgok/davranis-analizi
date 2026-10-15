@@ -10,7 +10,8 @@ You are free to share and adapt the material for NON-COMMERCIAL purposes, with a
 
 Attribution: "Davranis Analizi v2.1.1 weights, Abdulkadir Gök, CC BY-NC-SA 4.0".
 
-Additional notice (not a legal opinion): the weights were trained/evaluated with data that carry their own terms - MELD, CMU-MOSEI,
-CREMA-D, RAVDESS (CC BY-NC-SA 4.0), FER2013/AffectNet/RAF-DB (research use). Those terms apply in addition to this license.
+Additional notice (not a legal opinion): the weights include components trained with FER2013, AffectNet, RAF-DB (duygu7), MELD, CMU-MOSEI,
+CREMA-D and RAVDESS (CC BY-NC-SA 4.0). The terms of these datasets apply in addition to this license; access to the weights is therefore
+gated (manual approval).
 Base models (Qwen2.5-7B-Instruct, Apache-2.0; Whisper, MIT) are not included and keep their own licenses.
 Out-of-scope uses (hiring, surveillance, identification, lie/intent detection, medical diagnosis) are described in MODEL_CARD.md section 6.

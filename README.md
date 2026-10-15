@@ -8,11 +8,11 @@ Video/ses penceresinde **ölçülen** yüz ve ses göstergelerini listeleyen, he
 ## Bağlantılar
 | | |
 |---|---|
-| HF model (ağırlıklar + kod) | https://huggingface.co/akadirgok/davranis-v2-1-1 |
+| HF model (ağırlıklar + kod; **kapılı erişim**, manuel onay) | https://huggingface.co/akadirgok/davranis-v2-1-1 |
 | HF Space (demo) | https://huggingface.co/spaces/akadirgok/davranis-v2-1-1-demo |
-| Kaggle Model | https://www.kaggle.com/models/abdulkadirgk/davranis-v2-1-1 |
+| Kaggle Model | özel (Kaggle'da kapılı erişim yok; ağırlıklar HF'de kapılı erişimle) |
 
-(Bağlantılar yayına açılana kadar özeldir.)
+Ağırlıklar FER2013, AffectNet, RAF-DB, MELD, CMU-MOSEI, CREMA-D ve RAVDESS ile eğitilmiş bileşenler içerir; bu veri setlerinin koşulları ayrıca geçerlidir (hukuki görüş değildir).
 
 ## Mimari
 ```mermaid
@@ -46,10 +46,10 @@ Kod katmanı (ölçüm, katman ataması, ölçüm cümlesi, anlam/alternatif sö
 ### RAVDESS sağlık testi (n=4, Actor_04, eğitimde görülmemiş; yalnız akıl sağlığı)
 | etiket | davranış duygusu | içerik duygusu | birleşik |
 |---|---|---|---|
-| mutlu | çıkarım yapılamıyor (Şaşkınlık 0,53) | Şaşkınlık 0,56 | Şaşkınlık 0,58 ✗ |
-| kızgın | çıkarım yapılamıyor (Öfke 0,53) | Şaşkınlık 0,54 | **Öfke 0,68** ✓ |
-| üzgün | çıkarım yapılamıyor (Şaşkınlık 0,33) | Nötr 1,00 | Nötr 1,00 ✗ (içerik davranışı bastırdı) |
-| şaşkın | şaşkın (0,89) | Şaşkınlık 0,55 | **Şaşkınlık 0,94** ✓ |
+| mutlu | Şaşkınlık 0,58 ✗ | Şaşkınlık 0,56 | Şaşkınlık 0,58 ✗ |
+| kızgın | **Öfke 0,68** ✓ | Şaşkınlık 0,54 | **Öfke 0,68** ✓ |
+| üzgün | çıkarım yapılamıyor (0,26) | Nötr 1,00 | Nötr 1,00 ✗ (içerik davranışı bastırdı) |
+| şaşkın | **Şaşkınlık 0,94** ✓ | Şaşkınlık 0,55 | **Şaşkınlık 0,94** ✓ |
 
 Sabit cümleli kayıtlarda söz nötrdür; birleşik değerlendirme nötre kayabilir, davranış duygusuna bakın. Ayrıntı: [MODEL_CARD.md](MODEL_CARD.md).
 
