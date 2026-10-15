@@ -153,5 +153,57 @@ class OlcumKatmaniSentetik(unittest.TestCase):
             self.assertEqual(x["katman"], "olasi")
 
 
+def _wav(yol, y, sr=16000):
+    import wave
+    with wave.open(yol, "wb") as f:
+        f.setnchannels(1); f.setsampwidth(2); f.setframerate(sr); f.writeframes((np.clip(y, -1, 1) * 32767).astype(np.int16).tobytes())
+
+
+class CanliMod(unittest.TestCase):
+    def test_sessiz_kayit_sessiz_sayilir_ses_z_yok(self):
+        d = tempfile.mkdtemp()
+        w = os.path.join(d, "s.wav")
+        _wav(w, np.zeros(16000 * 7))                                               # dijital sessizlik
+        m = C.medya_pencereleri(w)
+        self.assertEqual([p["ses_durumu"] for p in m["pencereler"]], ["sessiz"] * len(m["pencereler"]))
+        ok = C.OlcumKatmani()
+        o = C.CanliOturum()
+        for p in m["pencereler"]:
+            s = o.isle(ok, p)
+            self.assertEqual(s["ol"], [])                                          # sessizlik 'duraksama z=6' uretmemeli
+        self.assertEqual(o.ses_n, 0)
+
+    def test_ses_kisi_referansi_olmadan_gizli(self):
+        d = tempfile.mkdtemp()
+        w = os.path.join(d, "k.wav")
+        rng = np.random.default_rng(3)
+        t = np.arange(16000 * 7) / 16000
+        _wav(w, 0.01 * np.sin(2 * np.pi * 400 * t) + 0.002 * rng.standard_normal(len(t)))   # cok kisik ama sessiz degil
+        m = C.medya_pencereleri(w)
+        ok = C.OlcumKatmani()
+        o = C.CanliOturum()
+        for p in m["pencereler"]:
+            self.assertEqual(p["ses_durumu"], "okundu")
+            s = o.isle(ok, p)
+            self.assertTrue(s["ses_gizli"])
+            self.assertFalse([x for x in s["ol"] if x["sinyal"] in C.SES_SINYALLERI])
+        self.assertEqual(o.ses_n, len(m["pencereler"]))
+        self.assertFalse(o.ses_referansi_hazir)
+        o.sifirla()
+        self.assertEqual((o.ses_n, o.ses_sn), (0, 0.0))
+
+    def test_referans_dolunca_ses_kisiye_gore(self):
+        ok = C.OlcumKatmani()
+        o = C.CanliOturum()
+        rng = np.random.default_rng(5)
+        pen = lambda a: {"t0": 0.0, "t1": 3.0, "kare": None, "ses": a.astype(np.float32), "ses_durumu": "okundu"}
+        for _ in range(10):
+            o.isle(ok, pen(0.05 * rng.standard_normal(48000)))
+        self.assertTrue(o.ses_referansi_hazir)
+        s = o.isle(ok, pen(0.5 * rng.standard_normal(48000)))                       # ayni kisiye gore ~10x yuksek ses
+        self.assertFalse(s["ses_gizli"])
+        self.assertTrue(any(x["sinyal"] == "rms_ortalama" and x["baglam"] == "kisi" for x in s["ol"]), s["ol"])
+
+
 if __name__ == "__main__":
     unittest.main()

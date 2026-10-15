@@ -1,8 +1,9 @@
 """Davranış Analizi v2.1.1 - HF Space (Gradio, ZeroGPU).
 
-Hızlı katman (CPU): YuNet + MediaPipe + librosa -> ölçüm cümleleri + kural tabanlı anlam/alternatif.
-LLM katmanı (GPU): Whisper + öğrenci (Qwen2.5-7B QLoRA) -> iki yorum cümlesi + birleşik duygu dağılımı.
+Hızlı katman (CPU): YuNet + MediaPipe + librosa -> 3 sn pencerelerde ölçüm cümleleri + kural tabanlı anlam/alternatif.
+LLM katmanı (GPU): Whisper + öğrenci (Qwen2.5-7B QLoRA) -> iki yorum cümlesi + birleşik duygu dağılımı (en çok işaretli pencere).
 Kod ve ağırlıklar ÖZEL model deposundan (MODEL_REPO, Space secret HF_TOKEN) indirilir. Kullanıcı girdisi kalıcı olarak SAKLANMAZ.
+Cihaza duyarlı ses ölçümleri kişisel referans (>=10 konuşma penceresi, >=30 sn; oturum belleği) olmadan gösterilmez.
 """
 import os
 import sys
@@ -50,31 +51,6 @@ def _surumler():
 
 log("surumler:", _surumler())
 
-MODEL_REPO = os.environ.get("MODEL_REPO", "akadirgok/davranis-v2-1-1")
-TOKEN = os.environ.get("HF_TOKEN")
-YEREL_KOK = os.environ.get("DAVRANIS_YEREL_KOK")             # gelistirme: depo klasoru (indirme yok)
-GPU_SN = int(os.environ.get("DAVRANIS_GPU_SN", "120"))
-os.environ.setdefault("DAVRANIS_4BIT", "1")
-os.environ.setdefault("GRADIO_ANALYTICS_ENABLED", "False")
-
-KOD_DESEN = ["*.py", "davranis_model/*", "*.json", "yapilandirma/*", "olcum_modelleri/*"]
-_kilit = threading.RLock()
-_kok = None
-_olcum = None
-_analizci = None
-C = None                                                      # cikarim_v211 modulu
-
-
-def log(*a):
-    print(f"[{time.strftime('%H:%M:%S')}]", *a, flush=True)
-
-
-try:
-    import importlib.metadata as _md
-    log("surumler:", {p: _md.version(p) for p in ("torch", "torchvision", "transformers", "gradio", "spaces") if _md.distribution(p)} )
-except Exception as _e:
-    log("surum bilgisi okunamadi:", type(_e).__name__, str(_e)[:100])
-
 
 def kod_hazirla():
     """Kod + kucuk dosyalar (agirlik YOK): hizli katman icin yeterli."""
@@ -116,65 +92,96 @@ def olcum_katmani():
     return _olcum
 
 
-def bicimle_olcum(r, ham, baglam, n_gecmis):
-    s = ["### Ölçümler (hızlı katman)"]
-    if ham["bulunan_kare"] == 0 and r["mod"] != "sadece_kulak":
-        s.append("_Görüntüde yüz ölçülemedi; yalnız ses göstergeleri değerlendirildi._")
+SES_DURUM_TR = {
+    "okundu": "okundu",
+    "sessiz": "ses akışı var ama sinyal yok (sessiz kayıt) — mikrofon/izni kontrol edin",
+    "yok": "ses akışı yok",
+}
+
+
+def pencere_md(i, pen, s, r):
+    """Tek pencere: yuz/ses durum satirlari + olcum tablosu (kural tabanli yorum ayri)."""
+    t = f"{pen['t0']:.0f}–{pen['t1']:.1f} sn"
+    L = [f"**Pencere {i + 1} ({t})** · yüz bulunan kare: {s['yuz_bulunan']}/8 · ses: {SES_DURUM_TR[pen['ses_durumu']]}"]
+    if s["yuz_bulunan"] == 0 and pen["kare"] is not None:
+        L.append("_Görüntüde yüz bulunamadı (YuNet eşiği 0,7; yüz küçük/kapalı olabilir)._")
     if not r["olcum"]:
-        s.append("Eşiği geçen ölçüm yok.")
+        if s["yuz_bulunan"] > 0:
+            L.append("Eşiği geçen ölçüm yok (3 sn pencere ortalaması genel referansa göre eşik altında; kısa süreli ifadeler ortalamada sulanır).")
+        else:
+            L.append("Eşiği geçen ölçüm yok.")
     else:
-        s.append("| katman | ölçüm |\n|---|---|")
+        L.append("| katman | ölçüm |")
+        L.append("|---|---|")
         for x in r["olcum"]:
-            s.append(f"| {'kanıt' if x['katman'] == 'kanit' else 'olası'} | {x['cumle']} |")
-    ref = ("kişi referansı: bu oturumdaki önceki klipler" if baglam == "kisi"
-           else f"referans: genel popülasyon (kanıt katmanı için aynı kişinin ≥10 önceki klibi ve ≥30 sn gerekir; oturumda {n_gecmis} klip)")
-    s.append(f"\n_{ref}_")
-    if r.get("yorum"):
-        s.append("\n**Kural tabanlı yorum:** " + r["yorum"])
-    s.append("\n> " + C.UYARI)
-    return "\n".join(s)
+            L.append(f"| {'kanıt' if x['katman'] == 'kanit' else 'olası'} | {x['cumle']} |")
+    return "\n".join(L)
 
 
-def hizli(video, ses, gecmis):
-    """CPU: ölçüm cümleleri. Dönüş: (markdown, oturum durumu, ctx)."""
+def referans_md(o):
+    n, sn = o.ses_n, o.ses_sn
+    if o.ses_referansi_hazir:
+        return f"_Kişisel ses referansı hazır ({n} konuşma penceresi, {sn:.0f} sn): ses ölçümleri kişiye göre._"
+    return (f"⏳ **Kişisel referans oluşturuluyor:** ses ölçümleri (ses seviyesi, duraksama, perde) cihaza duyarlı olduğu için "
+            f"≥{C.SES_REF_PENCERE} konuşma penceresi ve ≥{C.SES_REF_SN:.0f} sn normal konuşma toplanana kadar GÖSTERİLMEZ "
+            f"({n}/{C.SES_REF_PENCERE} pencere, {sn:.0f}/{C.SES_REF_SN:.0f} sn).")
+
+
+def hizli(video, ses, oturum):
+    """CPU: pencereli olcum. Donus: (markdown, oturum, ctx)."""
     yol = video or ses
     if not yol:
-        return "Bir video ya da ses kaydı verin.", gecmis, None
+        return "Bir video ya da ses kaydı verin.", oturum, None
     ok = olcum_katmani()
     try:
-        from davranis_model import dogrudan_olcum as D
-        kare, y, sure = C.medya_oku(yol)
-        if kare is None and y is None:
-            return "Girdide görüntü ya da ses bulunamadı.", gecmis, None
-        ham = ok.ham_olcum(kare, y)
-        g = gecmis if gecmis is not None else D.KisiGecmisi()
-        n_once = len(g.yuz)
-        ol, baglam = ok.isaretler(ham, g)
-        mod = C.kip(kare is not None, y is not None)
-        r = C.hizli_cikti(ol, mod, sure)
-        ok.gecmise_ekle(g, ham, sure)                         # nedensel: ölçümden SONRA
-        return bicimle_olcum(r, ham, baglam, n_once), g, {"yol": yol, "mod": mod, "sure": sure, "ol": ol}
+        o = oturum if oturum is not None else C.CanliOturum()
+        m = C.medya_pencereleri(yol)
+        if not m["pencereler"]:
+            return "Girdide görüntü ya da ses bulunamadı.", o, None
+        bolumler, kural, en, en_n = [], [], None, -1
+        for i, pen in enumerate(m["pencereler"]):
+            s = o.isle(ok, pen)
+            mod = C.kip(pen["kare"] is not None, pen["ses"] is not None)
+            r = C.hizli_cikti(s["ol"], mod, pen["t1"] - pen["t0"], t0=pen["t0"])
+            bolumler.append(pencere_md(i, pen, s, r))
+            if s["ol"]:
+                kural.append(f"**Pencere {i + 1}:** {r['yorum']}")
+            if len(s["ol"]) > en_n:
+                en, en_n = (i + 1, pen, s, mod), len(s["ol"])
+        k = m["kodek"]
+        ses_b = f" ({k['ses_hz']} Hz, {k['ses_kanal']} kanal)" if k["ses_hz"] else ""
+        ust = (f"### Ölçümler (hızlı katman)\nGirdi: video {k['video_kodek'] or '—'}, ses {k['ses_kodek'] or '—'}{ses_b}"
+               f" · {len(m['pencereler'])} pencere (3 sn)\n\n" + referans_md(o) + "\n\n" + "\n\n".join(bolumler))
+        uyari = "\n\n> " + C.UYARI
+        ek = ("\n\n**Kural tabanlı yorum:**\n\n" + "\n\n".join(kural)) if kural else ""
+        ctx = {"yol": yol, "ust": ust, "uyari": uyari}
+        if en is not None and en[2]["ol"]:
+            ctx.update(pencere_no=en[0], pen=en[1], ol=en[2]["ol"], mod=en[3], sure=en[1]["t1"] - en[1]["t0"])
+        return ust + ek + uyari, o, ctx
     except Exception as e:
-        return f"Ölçüm hatası: {type(e).__name__}: {str(e)[:200]}", gecmis, None
+        return f"Ölçüm hatası: {type(e).__name__}: {str(e)[:200]}", oturum, None
 
 
 @GPU(duration=GPU_SN)
 def llm_katmani(ctx):
-    """GPU: Whisper + öğrenci. ctx hizli()'dan gelir (girdi dosyası yeniden okunur ve iş bitince silinir)."""
+    """GPU: Whisper + öğrenci, EN ÇOK işaretli pencere için. Başarılıysa kural yorumu üst bölümden çıkarılır (tekrar yok).
+    Dönüş: (ölçüm md, model md)."""
     global _analizci
     if not ctx:
-        return ""
+        return gr.update(), ""
     t0 = time.time()
     try:
+        if "pen" not in ctx:
+            return gr.update(), "_Eşiği geçen ölçüm bulunan pencere yok; model yorumu üretilmedi (yukarıdaki sonuç geçerlidir)._"
         kod_hazirla()
         with _kilit:
             if _analizci is None:
                 _analizci = C.Analizci(_kok, log=log).yukle()
-        kare, y, sure = C.medya_oku(ctx["yol"])
-        r = _analizci.analiz(kare, y, sure, ctx["ol"], ctx["mod"], yunet=olcum_katmani().yn)
+        pen = ctx["pen"]
+        r = _analizci.analiz(pen["kare"], pen["ses"], ctx["sure"], ctx["ol"], ctx["mod"], yunet=olcum_katmani().yn)
     except Exception as e:
         log("llm hatasi:", type(e).__name__, str(e)[:300])
-        return f"_Yorum üretilemedi ({type(e).__name__}); hızlı katman sonucu geçerlidir._"
+        return gr.update(), f"_Model yorumu üretilemedi ({type(e).__name__}); kural tabanlı yorum geçerlidir._"
     finally:
         try:                                                  # girdi dosyası işleme biter bitmez silinir
             if ctx.get("yol") and os.path.exists(ctx["yol"]):
@@ -182,42 +189,44 @@ def llm_katmani(ctx):
         except Exception:
             pass
     if r.get("hata"):
-        return f"_Yorum üretilemedi: {r['hata']}_"
+        return gr.update(), f"_Model yorumu üretilemedi: {r['hata']}_"
     gd = r["genel_duygu"]
-    s = ["### Model yorumu (LLM katmanı)"]
+    s = [f"### Model yorumu (LLM katmanı) — pencere {ctx['pencere_no']}"]
     if r.get("transkript"):
         s.append(f"**Söylenen (otomatik transkript):** {r['transkript']}")
     karar = gd["sinif"] if gd["secici"] else "çıkarım yapılamıyor"
     s.append(f"**Genel duygu dağılımı:** en olası sınıf **{gd['sinif']}** (p={gd['p']:.2f}); karar: **{karar}** (eşik 0,55)")
-    s.append("| sınıf | olasılık |\n|---|---|\n" + "\n".join(f"| {k} | {v:.2f} |" for k, v in sorted(gd["dagilim"].items(), key=lambda kv: -kv[1])))
+    tablo = ["| sınıf | olasılık |", "|---|---|"] + [f"| {k} | {v:.2f} |" for k, v in sorted(gd["dagilim"].items(), key=lambda kv: -kv[1])]
+    s.append("\n".join(tablo))
     gy = ((r.get("json") or {}).get("olay") or {}).get("genel_yorum")
     if gy:
         s.append("**Genel yorum:** " + gy)
-    s.append(f"\n_Süre: {time.time() - t0:.0f} sn · yapılandırma {r['yapilandirma_sha256']}_")
-    s.append("\n> " + r["uyari"])
-    return "\n".join(s)
+    s.append(f"_Süre: {time.time() - t0:.0f} sn · yapılandırma {r['yapilandirma_sha256']}_")
+    s.append("> " + r["uyari"])
+    return ctx["ust"] + ctx["uyari"], "\n\n".join(s)         # model yorumu var: kural yorumu tekrar gösterilmez
 
 
 def sifirla():
-    return None, "Oturum geçmişi sıfırlandı.", ""
+    return None, "Oturum ve kişisel referans silindi.", ""
 
 
 ACIKLAMA = """# Davranış Analizi v2.1.1 — ölçüme dayalı, temkinli yorum
-**Yalan tespiti, kişilik testi ya da duygu "okuma" aracı DEĞİLDİR.** Kısa bir video/ses penceresinde *ölçülen* yüz ve ses göstergelerini listeler;
+**Yalan tespiti, kişilik testi ya da duygu "okuma" aracı DEĞİLDİR.** Kısa pencerelerde *ölçülen* yüz ve ses göstergelerini listeler;
 her göstergenin yaygın anlamını temkinli yazar. Uyum (söz–davranış) iddiası kapalıdır.
 
+* **Önce ~30 sn normal konuşun (kişisel referans):** ses ölçümleri mikrofona/cihaza duyarlıdır; ≥10 konuşma penceresi (≥30 sn) toplanana kadar
+  gösterilmez ve yorumda kullanılmaz. Referans yalnızca oturum belleğindedir; "Oturumu sıfırla" siler.
 * **Gizlilik:** yüklediğiniz/kaydettiğiniz klip yalnızca işlenmek için geçici olarak kullanılır, işlem biter bitmez silinmeye çalışılır; kaydedilmez, eğitime katılmaz.
-  Oturumdaki önceki klipler yalnızca oturum belleğinde tutulur (kişi referansı için; sayfayı kapatınca gider).
-* Girdinin ilk 10 saniyesi kullanılır. Yalnızca kendi görüntünüzü/sesinizi ya da izin aldığınız kişileri işleyin.
+* İlk 30 saniye 3 sn'lik pencerelerle işlenir. Yalnızca kendi görüntünüzü/sesinizi ya da izin aldığınız kişileri işleyin.
 * **Kullanım dışı:** işe alım, güvenlik/gözetim, sağlık teşhisi, kimlik tanıma, kredi/sigorta, adli süreçler.
-* Araştırma/ticari olmayan amaçlıdır; sınırlar ve veri lisansları model kartında.
+* Araştırma/demo amaçlıdır; sınırlar ve veri lisansları model kartında.
 """
 
 
 def arayuz():
     with gr.Blocks(title="Davranış Analizi v2.1.1") as demo:
         gr.Markdown(ACIKLAMA)
-        gecmis = gr.State(None)
+        oturum = gr.State(None)
         ctx = gr.State(None)
         with gr.Row():
             with gr.Column():
@@ -229,10 +238,10 @@ def arayuz():
             with gr.Column():
                 cikti1 = gr.Markdown()
                 cikti2 = gr.Markdown()
-        btn.click(hizli, [video, ses, gecmis], [cikti1, gecmis, ctx], api_name="olcum").then(
-            lambda: "_LLM katmanı çalışıyor (ilk istekte soğuk başlangıç birkaç dakika sürebilir)…_", None, cikti2).then(
-            llm_katmani, [ctx], [cikti2], api_name="yorum")
-        sf.click(sifirla, None, [gecmis, cikti1, cikti2])
+        btn.click(hizli, [video, ses, oturum], [cikti1, oturum, ctx], api_name="olcum").then(
+            lambda: "_Model katmanı çalışıyor (ilk istekte soğuk başlangıç birkaç dakika sürebilir)…_", None, cikti2).then(
+            llm_katmani, [ctx], [cikti1, cikti2], api_name="yorum")
+        sf.click(sifirla, None, [oturum, cikti1, cikti2])
     return demo
 
 

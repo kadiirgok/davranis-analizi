@@ -7,3 +7,5 @@ agirliklar/duygu7_final/model.safetensors
 *.wav
 *.mp4
 *.tmp
+ornek_test/
+desktop.ini

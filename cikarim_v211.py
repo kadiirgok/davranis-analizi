@@ -83,6 +83,136 @@ def medya_oku(dosya, maks_sn=MAKS_SN):
     return kare, y, float(sure)
 
 
+# ---------------------------------------------------------------------------------------------- canli mod: pencereler + oturum referansi
+PENCERE_SN = 3.0               # egitim klipleri ~1-5 sn; 8 kare ortalamasi bu uzunlukta anlamlidir (uzun pencerede gulumseme gibi kisa olaylar sulanir)
+MAKS_SN = 30.0
+SES_SESSIZ_RMS = 1e-4          # modelin config.ses_sessiz_rms ile AYNI: altindaki ses 'sessiz' (kayit var, sinyal yok) sayilir
+SES_REF_PENCERE, SES_REF_SN = 10, 30.0
+SES_SINYALLERI = ("rms_ortalama", "sessizlik_orani", "perde_ortalama_hz", "perde_std_hz")
+
+
+def ses_durumu(y):
+    """'yok' (ses akisi yok) | 'sessiz' (akis var, sinyal yok/dijital sessizlik) | 'okundu'."""
+    if y is None or len(y) == 0:
+        return "yok"
+    return "okundu" if float(np.sqrt(np.mean(np.square(y, dtype=np.float64)))) >= SES_SESSIZ_RMS else "sessiz"
+
+
+def medya_pencereleri(dosya, pencere_sn=PENCERE_SN, maks_sn=MAKS_SN, kare_n=KARE_N, maks_kenar=1280):
+    """Video/ses -> {'pencereler': [{t0,t1,kare [8,H,W,3]|None, ses|None, ses_durumu}], 'ses_akisi': bool, 'video_akisi': bool, 'kodek': {...}}.
+    Kareler akis halinde, yalniz her pencerenin 8 hedef zamaninda alinir (1080p tum kareler bellekte tutulmaz). webm/opus (tarayici kaydi) dahil PyAV."""
+    import av
+    import cv2
+    bilgi = {"video_kodek": None, "ses_kodek": None, "ses_hz": None, "ses_kanal": None}
+    ses = []
+    with av.open(dosya) as c:
+        if c.streams.audio:
+            s = c.streams.audio[0]
+            bilgi.update(ses_kodek=s.codec_context.name, ses_hz=s.rate, ses_kanal=s.channels)
+            rs = av.AudioResampler(format="flt", layout="mono", rate=16000)
+            for fr in c.decode(audio=0):
+                if fr.time is not None and fr.time > maks_sn + 1:
+                    break
+                ses += [x.to_ndarray().reshape(-1) for x in rs.resample(fr)]
+    y = np.concatenate(ses).astype(np.float32) if ses else None
+    video, sure = False, None
+    with av.open(dosya) as c:
+        vs = c.streams.video[0] if c.streams.video else None
+        video = vs is not None
+        if video:
+            bilgi["video_kodek"] = vs.codec_context.name
+            if c.duration:
+                sure = float(c.duration) / 1e6
+    if y is not None:
+        sure = max(sure or 0.0, len(y) / 16000.0) if sure is None else min(sure, max(sure, len(y) / 16000.0))
+    if video and sure is None:                                   # sure basligi yok (MediaRecorder webm): zaman damgalarini say
+        with av.open(dosya) as c:
+            son = 0.0
+            for fr in c.decode(video=0):
+                if fr.time is not None:
+                    son = max(son, float(fr.time))
+                if son > maks_sn:
+                    break
+            sure = son
+    sure = min(float(sure or 0.0), maks_sn)
+    if sure <= 0:
+        return {"pencereler": [], "ses_akisi": y is not None, "video_akisi": video, "kodek": bilgi}
+    n = max(1, int(np.ceil(sure / pencere_sn - 1e-6)))
+    kenar = [(i * pencere_sn, min((i + 1) * pencere_sn, sure)) for i in range(n)]
+    if len(kenar) > 1 and kenar[-1][1] - kenar[-1][0] < 1.0:     # <1 sn artik pencere atilir
+        kenar.pop()
+    hedef = [[a + (k + 0.5) * (b - a) / kare_n for k in range(kare_n)] for a, b in kenar]
+    kareler = [[None] * kare_n for _ in kenar]
+    if video:
+        pos = [(w, k, hedef[w][k]) for w in range(len(kenar)) for k in range(kare_n)]
+        j, son = 0, None
+        with av.open(dosya) as c:
+            for fr in c.decode(video=0):
+                tf = float(fr.time) if fr.time is not None else None
+                if tf is None:
+                    continue
+                if j >= len(pos):
+                    break
+                if tf >= pos[j][2]:
+                    rgb = fr.to_ndarray(format="rgb24")
+                    h, w_ = rgb.shape[:2]
+                    if max(h, w_) > maks_kenar:
+                        f = maks_kenar / max(h, w_)
+                        rgb = cv2.resize(rgb, (int(w_ * f), int(h * f)), interpolation=cv2.INTER_AREA)
+                    while j < len(pos) and tf >= pos[j][2]:
+                        kareler[pos[j][0]][pos[j][1]] = rgb
+                        j += 1
+                    son = rgb
+            if son is not None:
+                while j < len(pos):                              # akis erken bitti: son kare ile doldur
+                    kareler[pos[j][0]][pos[j][1]] = son
+                    j += 1
+    out = []
+    for w, (a, b) in enumerate(kenar):
+        ks = kareler[w]
+        kare = np.stack(ks) if video and all(k is not None for k in ks) else None
+        yy = y[int(a * 16000):int(b * 16000)] if y is not None else None
+        d = ses_durumu(yy)
+        out.append({"t0": a, "t1": b, "kare": kare, "ses": yy if d == "okundu" else None, "ses_durumu": d})
+    return {"pencereler": out, "ses_akisi": y is not None, "video_akisi": video, "kodek": bilgi}
+
+
+class CanliOturum:
+    """Oturum ici NEDENSEL kisi referansi (yalniz bellekte; sifirla() siler). Cihaza duyarli ses sinyalleri (ses seviyesi, duraksama, perde ort./std)
+    kisi referansi (>=10 konusma penceresi ve >=30 sn) OLMADAN gosterilmez / yorumda kullanilmaz; yuz sinyalleri genel referansla 'olasi' olarak gosterilir."""
+
+    def __init__(self):
+        from davranis_model import dogrudan_olcum as D
+        self._D = D
+        self.sifirla()
+
+    def sifirla(self):
+        self.gecmis = self._D.KisiGecmisi()
+        self.ses_n, self.ses_sn = 0, 0.0
+
+    @property
+    def ses_referansi_hazir(self):
+        return self.ses_n >= SES_REF_PENCERE and self.ses_sn >= SES_REF_SN
+
+    def isle(self, ok, pen):
+        """Bir pencere -> {'ol','baglam','ses_gizli','ses_ref':(n,sn),'yuz_bulunan','ham'}; pencere SONRA gecmise eklenir (nedensel)."""
+        ham = ok.ham_olcum(pen["kare"], pen["ses"])
+        ses_ref = self.ses_referansi_hazir
+        girdi = dict(ham)
+        if not ses_ref:                                          # ses z'si kisi referansi olmadan hesaplanmaz
+            girdi["ses"] = np.full(4, np.nan)
+        ol, baglam = ok.isaretler(girdi, self.gecmis)
+        ol = [x for x in ol if ses_ref or x["sinyal"] not in SES_SINYALLERI]
+        sonuc = {"ol": ol, "baglam": baglam, "ses_gizli": (pen["ses_durumu"] == "okundu") and not ses_ref, "ses_ref": (self.ses_n, self.ses_sn),
+                 "yuz_bulunan": ham["bulunan_kare"], "ham": ham}
+        sure = pen["t1"] - pen["t0"]
+        ok.gecmise_ekle(self.gecmis, ham, sure)
+        if pen["ses_durumu"] == "okundu":
+            self.ses_n += 1
+            self.ses_sn += sure
+        return sonuc
+
+
 # ---------------------------------------------------------------------------------------------- hizli katman (CPU)
 class OlcumKatmani:
     """LLM'siz katman. Egitim/test olcumuyle ayni islem: YuNet(0,7/0,3/50) kutu -> %15 pay -> 224 + 56 px replicate -> MediaPipe blendshape."""
@@ -150,14 +280,14 @@ def katman_listeleri(ol, mod, SB, HD):
     return DK.listeler(ol, mod, SB, HD.AK.yokluk_isaretleri())
 
 
-def hizli_cikti(ol, mod, sure_sn, HD=None, SB=None, imza=None):
+def hizli_cikti(ol, mod, sure_sn, HD=None, SB=None, imza=None, t0=0.0):
     """LLM'siz sonuc: olcum cumleleri + kural tabanli parca yorumu (anlam/alternatif). Uyum iddiasi KAPALI."""
     if HD is None:
         import hedef_v2 as HD
     if SB is None:
         SB, imza = HD.sablon_yukle()
     K, O, Y = katman_listeleri(ol, mod, SB, HD)
-    t = f"0.0-{sure_sn:.1f}"
+    t = f"{t0:.1f}-{t0 + sure_sn:.1f}"
     sonuc = {"t": t, "mod": mod, "olcum": [{"sinyal": x["sinyal"], "z": x["z"], "yon": x["yon"], "katman": x["katman"], "baglam": x["baglam"], "cumle": x["cumle"]} for x in ol],
              "kanit": [i for i, _ in K], "olasi": [i for i, _ in O], "yorum": None, "uyari": UYARI}
     olas = {s: 1.0 / len(SINIFLAR_8) for s in SINIFLAR_8}
@@ -469,14 +599,22 @@ def main(argv=None):
     ap.add_argument("--cihaz", default=None)
     ap.add_argument("--cikti", default=None, help="JSON çıktı dosyası")
     a = ap.parse_args(argv)
-    kare, ses, sure = medya_oku(a.medya)
+    m = medya_pencereleri(a.medya)
     ok = OlcumKatmani()
-    ham = ok.ham_olcum(kare, ses)
-    ol, _ = ok.isaretler(ham, None)
-    mod = kip(kare is not None, ses is not None)
-    sonuc = {"olcum_katmani": hizli_cikti(ol, mod, sure), "ham": {"yuz_bulunan_kare": ham["bulunan_kare"], "sure_sn": sure}}
-    if not a.yalniz_olcum:
-        sonuc["model"] = Analizci(cihaz=a.cihaz).yukle().analiz(kare, ses, sure, ol, mod, yunet=ok.yn)
+    o = CanliOturum()
+    pen_sonuc, en = [], None
+    for i, pen in enumerate(m["pencereler"]):
+        s = o.isle(ok, pen)
+        mod = kip(pen["kare"] is not None, pen["ses"] is not None)
+        h = hizli_cikti(s["ol"], mod, pen["t1"] - pen["t0"], t0=pen["t0"])
+        pen_sonuc.append({"pencere": i + 1, "t": h["t"], "yuz_bulunan_kare": s["yuz_bulunan"], "ses": pen["ses_durumu"], "baglam": s["baglam"], "sonuc": h})
+        if en is None or len(s["ol"]) > len(en[1]["ol"]):
+            en = (pen, s, mod)
+    sonuc = {"girdi": m["kodek"], "ses_referansi": {"pencere": o.ses_n, "sn": round(o.ses_sn, 1), "hazir": o.ses_referansi_hazir,
+                                                    "not": "ses ölçümleri kişi referansı (≥10 konuşma penceresi, ≥30 sn) olmadan gösterilmez"}, "pencereler": pen_sonuc}
+    if not a.yalniz_olcum and en is not None and en[1]["ol"]:
+        pen, s, mod = en
+        sonuc["model"] = Analizci(cihaz=a.cihaz).yukle().analiz(pen["kare"], pen["ses"], pen["t1"] - pen["t0"], s["ol"], mod, yunet=ok.yn)
     s = json.dumps(sonuc, ensure_ascii=False, indent=1, default=float)
     if a.cikti:
         open(a.cikti, "w", encoding="utf-8").write(s)
